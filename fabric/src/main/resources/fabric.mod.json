@@ -1,0 +1,35 @@
+{
+  "schemaVersion": 1,
+  "id": "wxyttransit",
+  "version": "${version}",
+  "name": "Wxyt Mod",
+  "description": "This is an example description! Tell everyone what your mod is about!",
+  "authors": [
+    "Me!"
+  ],
+  "contact": {
+    "homepage": "https://fabricmc.net/",
+    "sources": "https://github.com/FabricMC/fabric-example-mod"
+  },
+  "license": "Insert License Here",
+  "icon": "assets/wxyttransit/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "net.wxyttransit.fabric.WxytTransitFabric"
+    ],
+    "client": [
+      "net.wxyttransit.fabric.WxytTransitFabricClient"
+    ]
+  },
+  "mixins": [
+    "wxyttransit.mixins.json",
+    "wxyttransit-common.mixins.json"
+  ],
+  "depends": {
+    "fabric": "*",
+    "minecraft": ">=1.20.1",
+    "architectury": ">=9.1.12",
+    "mtr": "*"
+  }
+}

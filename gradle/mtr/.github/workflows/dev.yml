@@ -1,0 +1,58 @@
+name: Dev
+on: [ pull_request, push ]
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        minecraft: [1.17.1, 1.18.2, 1.19.2, 1.19.3, 1.19.4]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@main
+      - name: Validate gradle wrapper
+        uses: gradle/wrapper-validation-action@main
+      - name: Setup JDK 17
+        uses: actions/setup-java@main
+        with:
+          java-version: 17
+          distribution: 'zulu'
+      - name: Make gradle wrapper executable
+        run: chmod +x ./gradlew
+      - name: Build ${{ matrix.minecraft }}
+        run: ./gradlew build -PbuildVersion="${{ matrix.minecraft }}" --scan --continue
+      - name: Latest
+        uses: actions/upload-artifact@main
+        with:
+          name: ${{ matrix.minecraft }} latest-dev-shadow
+          path: build/latest/*-dev-shadow.jar
+      - name: Common
+        uses: actions/upload-artifact@main
+        with:
+          name: ${{ matrix.minecraft }} common-dev
+          path: common/build/devlibs/*.jar
+      - name: Release
+        uses: actions/upload-artifact@main
+        with:
+          name: ${{ matrix.minecraft }}
+          path: build/release/*.jar
+  upload-collectively:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Download dev artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+          merge-multiple: true
+      - name: Display structure of downloaded files
+        run: ls -R artifacts
+      - name: Capture dev artifacts collectively
+        uses: actions/upload-artifact@v4
+        with:
+          name: Collective
+          path: artifacts/*.jar
+          compression-level: 9
