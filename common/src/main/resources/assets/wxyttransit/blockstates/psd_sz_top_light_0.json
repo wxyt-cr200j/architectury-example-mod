@@ -1,0 +1,9 @@
+{
+  "variants": {
+    "facing=west": {"model": "wxyttransit:block/psd_sz_top_light","y": 0},
+    "facing=north": {"model": "wxyttransit:block/psd_sz_top_light","y": 90},
+    "facing=east": {"model": "wxyttransit:block/psd_sz_top_light","y": 180},
+    "facing=south": {"model": "wxyttransit:block/psd_sz_top_light","y": 270}
+
+  }
+}

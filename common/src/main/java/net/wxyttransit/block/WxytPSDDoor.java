@@ -5,6 +5,7 @@ import mtr.Items;
 import mtr.block.BlockPSDAPGDoorBase;
 import mtr.block.BlockPSDDoor;
 import mtr.mappings.BlockEntityMapper;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
@@ -14,7 +15,7 @@ import net.wxyttransit.WxytBlockEntityTypes;
 import net.wxyttransit.WxytItems;
 import org.jetbrains.annotations.Nullable;
 
-public class WxytPSDDoor extends BlockPSDAPGDoorBase {
+public class WxytPSDDoor extends WxytPSDAPGDoorBase {
 
 	private final int style;
 
@@ -28,6 +29,7 @@ public class WxytPSDDoor extends BlockPSDAPGDoorBase {
 	public BlockEntityMapper createBlockEntity(BlockPos pos, BlockState state) {
 		return new TileEntityPSDDoor(style, pos, state);
 	}
+
 
 
 

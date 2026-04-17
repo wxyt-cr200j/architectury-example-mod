@@ -4,7 +4,6 @@ import mtr.block.BlockPSDAPGDoorBase;
 import mtr.block.BlockPSDAPGGlassEndBase;
 import mtr.block.IBlock;
 import mtr.data.IGui;
-import mtr.mappings.BlockEntityClientSerializableMapper;
 import mtr.mappings.EntityBlockMapper;
 import mtr.mappings.Text;
 import net.minecraft.core.BlockPos;
@@ -19,6 +18,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -30,6 +30,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.jetbrains.annotations.NotNull;
 
 public abstract class WxytPSDAPGDoorBase extends BlockPSDAPGDoorBase implements EntityBlockMapper {
 
@@ -38,6 +39,11 @@ public abstract class WxytPSDAPGDoorBase extends BlockPSDAPGDoorBase implements 
 	public static final BooleanProperty END = BooleanProperty.create("end");
 	public static final BooleanProperty UNLOCKED = BooleanProperty.create("unlocked");
 	public static final BooleanProperty TEMP = BooleanProperty.create("temp");
+
+	@Override
+	public @NotNull RenderShape getRenderShape(BlockState state){
+		return RenderShape.INVISIBLE;
+	}
 
 	@Override
 	public BlockState updateShape(BlockState state, Direction direction, BlockState newState, LevelAccessor world, BlockPos pos, BlockPos posFrom) {
@@ -161,7 +167,7 @@ public abstract class WxytPSDAPGDoorBase extends BlockPSDAPGDoorBase implements 
 				if (open == 1 && level != null) {
 					level.setBlockAndUpdate(worldPosition, level.getBlockState(worldPosition).setValue(TEMP, false));
 				}
-				System.out.println(open);
+				//System.out.println(open);
 			}
 		}
 

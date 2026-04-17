@@ -1,25 +1,37 @@
 package net.wxyttransit.render;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import mtr.block.BlockPSDAPGDoorBase;
 import mtr.block.BlockPSDAPGGlassEndBase;
 import mtr.block.BlockPSDTop;
 import mtr.block.IBlock;
 import mtr.client.ClientData;
 import mtr.client.IDrawing;
+import mtr.data.IGui;
+import mtr.mappings.BlockEntityRendererMapper;
+import mtr.mappings.UtilitiesClient;
 import mtr.render.RenderRouteBase;
 import mtr.render.RenderTrains;
 import mtr.render.StoredMatrixTransformations;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.Property;
 import net.wxyttransit.block.WxytPSDTop;
+import net.wxyttransit.data.DataObject;
+import org.jetbrains.annotations.NotNull;
 
-public class RenderWxytPSDTop extends RenderWxytRouteBase<WxytPSDTop.TileEntityPSDTop> {
+import java.util.Objects;
+
+public class RenderWxytPSDTop <T extends WxytPSDTop.TileEntityPSDTop> extends BlockEntityRendererMapper<T> implements IGui, IBlock{
 
 	private static final float END_FRONT_OFFSET = 1 / (Mth.SQRT_OF_TWO * 16);
 	private static final float BOTTOM_DIAGONAL_OFFSET = ((float) Math.sqrt(3) - 1) / 32;
@@ -27,29 +39,77 @@ public class RenderWxytPSDTop extends RenderWxytRouteBase<WxytPSDTop.TileEntityP
 	private static final float BOTTOM_END_DIAGONAL_OFFSET = END_FRONT_OFFSET - BOTTOM_DIAGONAL_OFFSET / Mth.SQRT_OF_TWO;
 	private static final float COLOR_STRIP_START = 14.5F / 16;
 	private static final float COLOR_STRIP_END = 15 / 16F;
-
-	public RenderWxytPSDTop(BlockEntityRenderDispatcher dispatcher) {
-		super(dispatcher, 2 - SMALL_OFFSET_16, 7.5F, 1.5F, 0.125F, true, BlockPSDTop.ARROW_DIRECTION);
+	protected final float topPadding;
+	protected final float bottomPadding;
+	protected final float sidePadding;
+	private final float z;
+	private final Property<Integer> arrowDirectionProperty;
+	private String type="sz_none";
+	public RenderWxytPSDTop(BlockEntityRenderDispatcher dispatcher,String type) {
+		super(dispatcher);
+		this.z = 1.95F / 16.0F;
+		this.topPadding = 7.5F / 16.0F;
+		this.bottomPadding = 1.5F / 16.0F;
+		this.sidePadding = 0.125F / 16.0F;
+		this.arrowDirectionProperty = BlockPSDTop.ARROW_DIRECTION;
+		this.type = type;
 	}
 
+
+
 	@Override
-	protected RenderType getRenderType(BlockGetter world, BlockPos pos, BlockState state) {
-		final BlockPSDTop.EnumPersistent persistent = IBlock.getStatePropertySafe(state, BlockPSDTop.PERSISTENT);
-		if (persistent == BlockPSDTop.EnumPersistent.NONE) {
-			final Block blockBelow = world.getBlockState(pos.below()).getBlock();
-			if (blockBelow instanceof BlockPSDAPGDoorBase) {
-				return RenderType.ARROW;
-			} else if (!(blockBelow instanceof BlockPSDAPGGlassEndBase)) {
-				return RenderType.ROUTE;
-			} else {
-				return RenderType.NONE;
+	public final void render(@NotNull T entity, float tickDelta, PoseStack matrices, MultiBufferSource vertexConsumers, int light, int overlay) {
+	//	System.out.println(6789);
+		final Level world = entity.getLevel();
+		if (world == null) {
+			return;
+		}
+
+		final BlockPos pos = entity.getBlockPos();
+		final BlockState state = world.getBlockState(pos);
+		final Direction facing = IBlock.getStatePropertySafe(state, HorizontalDirectionalBlock.FACING);
+
+		final StoredMatrixTransformations storedMatrixTransformations = new StoredMatrixTransformations();
+		storedMatrixTransformations.add(matricesNew -> {
+			matricesNew.translate(0.5 + entity.getBlockPos().getX(), entity.getBlockPos().getY(), 0.5 + entity.getBlockPos().getZ());
+			UtilitiesClient.rotateYDegrees(matricesNew, -facing.toYRot());
+		});
+
+		renderAdditionalUnmodified(storedMatrixTransformations.copy(), state, facing, light);
+
+		if (!RenderTrains.shouldNotRender(pos, RenderTrains.maxTrainRenderDistance, null)) {
+			final long platformId = entity.getPlatformId(ClientData.PLATFORMS, ClientData.DATA_CACHE);
+
+			if (platformId != 0) {
+				storedMatrixTransformations.add(matricesNew -> {
+					matricesNew.translate(0, 1, 0);
+					UtilitiesClient.rotateZDegrees(matricesNew, 180);
+					matricesNew.translate(-0.5, -getAdditionalOffset(state), z);
+				});
+
+				final int leftBlocks = getTextureNumber(world, pos, facing, true);
+				final int rightBlocks = getTextureNumber(world, pos, facing, false);
+				final int color = getShadingColor(facing, ARGB_WHITE);
+
+				if (!Objects.equals(type, "") &&type != null) {
+					final float width = leftBlocks + rightBlocks + 1 - sidePadding * 2;
+					final float height = 1 - topPadding - bottomPadding;
+					final int arrowDirection = IBlock.getStatePropertySafe(state, arrowDirectionProperty);
+
+					final ResourceLocation resourceLocation;
+					//System.out.println(platformId);
+					resourceLocation=WxytTextureData.data.getTextureLocation(type,new DataObject((Long) (platformId),arrowDirection), (int) (width*WxytTextureData.data.textureScale), (int) (height*WxytTextureData.data.textureScale));
+					RenderTrains.scheduleRender(resourceLocation, false, RenderTrains.QueuedRenderLayer.EXTERIOR, (matricesNew, vertexConsumer) -> {
+						storedMatrixTransformations.transform(matricesNew);
+						IDrawing.drawTexture(matricesNew, vertexConsumer, leftBlocks == 0 ? sidePadding : 0, topPadding, 0, 1 - (rightBlocks == 0 ? sidePadding : 0), 1 - bottomPadding, 0, (leftBlocks - (leftBlocks == 0 ? 0 : sidePadding)) / width, 0, (width - rightBlocks + (rightBlocks == 0 ? 0 : sidePadding)) / width, 1, facing.getOpposite(), color, light);
+						matricesNew.popPose();
+					});
+				}
+
+				renderAdditional(storedMatrixTransformations, platformId, state, leftBlocks, rightBlocks, facing.getOpposite(), color, light);
 			}
-		} else {
-			return persistent == BlockPSDTop.EnumPersistent.ARROW ? RenderType.ARROW : persistent == BlockPSDTop.EnumPersistent.ROUTE ? RenderType.ROUTE : RenderType.NONE;
 		}
 	}
-
-	@Override
 	protected void renderAdditionalUnmodified(StoredMatrixTransformations storedMatrixTransformations, BlockState state, Direction facing, int light) {
 		final boolean airLeft = IBlock.getStatePropertySafe(state, BlockPSDTop.AIR_LEFT);
 		final boolean airRight = IBlock.getStatePropertySafe(state, BlockPSDTop.AIR_RIGHT);
@@ -103,12 +163,11 @@ public class RenderWxytPSDTop extends RenderWxytRouteBase<WxytPSDTop.TileEntityP
 		});
 	}
 
-	@Override
 	protected void renderAdditional(StoredMatrixTransformations storedMatrixTransformations, long platformId, BlockState state, int leftBlocks, int rightBlocks, Direction facing, int color, int light) {
 		final boolean isNotPersistent = IBlock.getStatePropertySafe(state, BlockPSDTop.PERSISTENT) == BlockPSDTop.EnumPersistent.NONE;
 		final boolean airLeft = isNotPersistent && IBlock.getStatePropertySafe(state, BlockPSDTop.AIR_LEFT);
 		final boolean airRight = isNotPersistent && IBlock.getStatePropertySafe(state, BlockPSDTop.AIR_RIGHT);
-		RenderTrains.scheduleRender(ClientData.DATA_CACHE.getColorStrip(platformId).resourceLocation, false, RenderTrains.QueuedRenderLayer.EXTERIOR, (matrices, vertexConsumer) -> {
+		/*RenderTrains.scheduleRender(ClientData.DATA_CACHE.getColorStrip(platformId).resourceLocation, false, RenderTrains.QueuedRenderLayer.EXTERIOR, (matrices, vertexConsumer) -> {
 			storedMatrixTransformations.transform(matrices);
 			IDrawing.drawTexture(matrices, vertexConsumer, airLeft ? 0.625F : 0, COLOR_STRIP_START, 0, airRight ? 0.375F : 1, COLOR_STRIP_END, 0, facing, color, light);
 			if (airLeft) {
@@ -118,11 +177,50 @@ public class RenderWxytPSDTop extends RenderWxytRouteBase<WxytPSDTop.TileEntityP
 				IDrawing.drawTexture(matrices, vertexConsumer, 0.25F - END_FRONT_OFFSET, COLOR_STRIP_START, 0.125F - END_FRONT_OFFSET, 1 - END_FRONT_OFFSET, COLOR_STRIP_END, -0.625F - END_FRONT_OFFSET, facing, -1, light);
 			}
 			matrices.popPose();
-		});
+		});*/
 	}
 
-	@Override
+
+	protected boolean isLeft(BlockState state) {
+		return IBlock.getStatePropertySafe(state, SIDE_EXTENDED) == EnumSide.LEFT;
+	}
+
+	protected boolean isRight(BlockState state) {
+		return IBlock.getStatePropertySafe(state, SIDE_EXTENDED) == EnumSide.RIGHT;
+	}
 	protected float getAdditionalOffset(BlockState state) {
 		return IBlock.getStatePropertySafe(state, BlockPSDTop.PERSISTENT) == BlockPSDTop.EnumPersistent.NONE ? 0 : BlockPSDTop.PERSISTENT_OFFSET_SMALL;
 	}
+	private int getTextureNumber(BlockGetter world, BlockPos pos, Direction facing, boolean searchLeft) {
+		int number = 0;
+		final Block thisBlock = world.getBlockState(pos).getBlock();
+
+		while (true) {
+			final BlockState state = world.getBlockState(pos.relative(searchLeft ? facing.getCounterClockWise() : facing.getClockWise(), number));
+
+			if (state.getBlock() == thisBlock) {
+				final boolean isLeft = isLeft(state);
+				final boolean isRight = isRight(state);
+
+				if (number == 0 || (searchLeft ? !isRight : !isLeft)) {
+					number++;
+					if (searchLeft ? isLeft : isRight) {
+						break;
+					}
+				} else {
+					break;
+				}
+			} else {
+				break;
+			}
+		}
+
+		return number - 1;
+	}
+
+	public static int getShadingColor(Direction facing, int grayscaleColorByte) {
+		final int colorByte = Math.round((grayscaleColorByte & 0xFF) * (facing.getAxis() == Direction.Axis.X ? 0.75F : 1));
+		return ARGB_BLACK | ((colorByte << 16) + (colorByte << 8) + colorByte);
+	}
+
 }

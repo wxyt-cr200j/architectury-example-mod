@@ -37,6 +37,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.wxyttransit.WxytBlockEntityTypes;
+import net.wxyttransit.WxytBlocks;
 import net.wxyttransit.WxytItems;
 
 import java.util.Set;
@@ -140,7 +141,7 @@ public class WxytPSDTop extends BlockPSDTop implements EntityBlockMapper, IBlock
 
 	@Override
 	public BlockEntityMapper newBlockEntity(BlockPos pos, BlockState state) {
-		return null;
+		return new TileEntityPSDTop(pos, state);
 	}
 
 	public static BlockState getActualState(BlockGetter world, BlockPos pos) {
@@ -170,7 +171,7 @@ public class WxytPSDTop extends BlockPSDTop implements EntityBlockMapper, IBlock
 		}
 
 		final BlockState oldState = world.getBlockState(pos);
-		BlockState newState = (oldState.getBlock() instanceof WxytPSDTop ? oldState : mtr.Blocks.PSD_TOP.get().defaultBlockState()).setValue(AIR_LEFT, airLeft).setValue(AIR_RIGHT, airRight);
+		BlockState newState = (oldState.getBlock() instanceof WxytPSDTop ? oldState : WxytBlocks.WXYT_PSD_TOP_0.get().defaultBlockState()).setValue(AIR_LEFT, airLeft).setValue(AIR_RIGHT, airRight);
 		if (facing != null) {
 			newState = newState.setValue(FACING, facing);
 		}
@@ -196,6 +197,7 @@ public class WxytPSDTop extends BlockPSDTop implements EntityBlockMapper, IBlock
 			super(type, pos, state);
 		}
 
+		@Override
 		public long getPlatformId(Set<Platform> platforms, DataCache dataCache) {
 			if (dataCache.needsRefresh(cachedRefreshTime)) {
 				cachedPlatformId = RailwayData.getClosePlatformId(platforms, dataCache, getBlockPos());
