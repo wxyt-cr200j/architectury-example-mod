@@ -63,13 +63,15 @@ public class WxytPSDTop extends BlockPSDTop implements EntityBlockMapper, IBlock
 				world.setBlockAndUpdate(pos, state.cycle(ARROW_DIRECTION));
 				propagate(world, pos, IBlock.getStatePropertySafe(state, FACING).getClockWise(), ARROW_DIRECTION, 1);
 				propagate(world, pos, IBlock.getStatePropertySafe(state, FACING).getCounterClockWise(), ARROW_DIRECTION, 1);
-			} else {
+			} else if (item == WxytItems.WXYT_BRUSH.get()) {
+				world.setBlockAndUpdate(pos, state.cycle(PERSISTENT));
+			}else {
 				final boolean shouldBePersistent = IBlock.getStatePropertySafe(state, PERSISTENT) == EnumPersistent.NONE;
 				setState(world, pos, shouldBePersistent);
 				propagate(world, pos, IBlock.getStatePropertySafe(state, FACING).getClockWise(), offsetPos -> setState(world, offsetPos, shouldBePersistent), 1);
 				propagate(world, pos, IBlock.getStatePropertySafe(state, FACING).getCounterClockWise(), offsetPos -> setState(world, offsetPos, shouldBePersistent), 1);
 			}
-		}, null, Items.BRUSH.get(), net.minecraft.world.item.Items.SHEARS);
+		}, null, Items.BRUSH.get(), net.minecraft.world.item.Items.SHEARS,WxytItems.WXYT_BRUSH.get());
 	}
 
 	private void setState(Level world, BlockPos pos, boolean shouldBePersistent) {
@@ -100,11 +102,7 @@ public class WxytPSDTop extends BlockPSDTop implements EntityBlockMapper, IBlock
 
 	@Override
 	public void playerWillDestroy(Level world, BlockPos pos, BlockState state, Player player) {
-		final Block blockDown = world.getBlockState(pos.below()).getBlock();
-		if (blockDown instanceof BlockPSDAPGBase) {
-			blockDown.playerWillDestroy(world, pos.below(), world.getBlockState(pos.below()), player);
-			world.setBlockAndUpdate(pos.below(), Blocks.AIR.defaultBlockState());
-		}
+
 		super.playerWillDestroy(world, pos, state, player);
 	}
 
