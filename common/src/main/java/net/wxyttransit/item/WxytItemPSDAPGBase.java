@@ -32,10 +32,12 @@ public class WxytItemPSDAPGBase extends Item implements IBlock {
 
     private final EnumPSDAPGItem item;
     private final EnumPSDAPGType type;
-    public WxytItemPSDAPGBase(EnumPSDAPGItem item, EnumPSDAPGType type) {
+    private final String topType;
+    public WxytItemPSDAPGBase(EnumPSDAPGItem item, EnumPSDAPGType type,String topType) {
         super(new Properties().arch$tab(WXYT_MTR));
         this.item = item;
         this.type = type;
+        this.topType=topType;
     }
 
     @Override
@@ -66,7 +68,7 @@ public class WxytItemPSDAPGBase extends Item implements IBlock {
             }
 
             if (type.isPSD) {
-               // world.setBlockAndUpdate(newPos.above(2), PSDTopCache.PSDTopMap.get(topType).getActualState(world, newPos.above(2)));
+                world.setBlockAndUpdate(newPos.above(2), WxytPSDTop.getActualState(world, newPos.above(2)));
             }
         }
 

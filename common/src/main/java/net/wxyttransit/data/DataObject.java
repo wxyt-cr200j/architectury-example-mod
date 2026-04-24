@@ -18,13 +18,14 @@ public class DataObject {
     public Siding siding;
     public Route route;
     public int arrow;
+    public Long id;
     public DataObject(Long platformId){
         platform = ClientData.DATA_CACHE.platformIdMap.get(platformId);
         station = ClientData.DATA_CACHE.platformIdToStation.get(platformId);
         schedules = ClientData.SCHEDULES_FOR_PLATFORM.get(platformId);
         details = ClientData.DATA_CACHE.requestPlatformIdToRoutes(platformId);
         connectingStations = ClientData.DATA_CACHE.stationIdToConnectingStations.get(station);
-
+    this.id = platformId;
     }
     public DataObject(Long platformId,int arrow){
         this(platformId);

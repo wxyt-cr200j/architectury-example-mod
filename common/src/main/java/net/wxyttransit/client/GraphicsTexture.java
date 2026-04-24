@@ -22,7 +22,7 @@ import java.util.concurrent.*;
 @SuppressWarnings("unused")
 public class GraphicsTexture implements Closeable {
 
-    private static final ScheduledExecutorService executor = Executors.newScheduledThreadPool(2);
+    //private static final ScheduledExecutorService executor = Executors.newScheduledThreadPool(2);
 
     private final DynamicTexture dynamicTexture;
     public final ResourceLocation identifier;
@@ -56,6 +56,7 @@ public class GraphicsTexture implements Closeable {
         Graphics2D graphics = newImage.createGraphics();
         graphics.drawImage(src, 0, 0, null);
         graphics.dispose();
+
         return newImage;
     }
 
@@ -162,19 +163,13 @@ public class GraphicsTexture implements Closeable {
         }
         isClosed = true;
         graphics.dispose();
-        executor.schedule(() -> {
-            if (isClosed) {
-               // WxytTransit.LOGGER.info("GraphicsTexture already closed");
-            } else {
-                Minecraft.getInstance().execute(() -> {
-                    try {
-                        Minecraft.getInstance().getTextureManager().release(identifier);
-                        dynamicTexture.close();
-                    } catch (Exception e) {
-                       // WxytTransit.LOGGER.error("Failed to close GraphicsTexture", e);
-                    }
-                });
+        Minecraft.getInstance().execute(() -> {
+            try {
+                Minecraft.getInstance().getTextureManager().release(identifier);
+                dynamicTexture.close();
+            } catch (Exception e) {
+                // WxytTransit.LOGGER.error("Failed to close GraphicsTexture", e);
             }
-        }, delay, TimeUnit.MILLISECONDS);
+        });
     }
 }

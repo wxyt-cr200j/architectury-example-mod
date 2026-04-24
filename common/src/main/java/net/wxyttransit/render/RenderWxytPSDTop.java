@@ -78,6 +78,7 @@ public class RenderWxytPSDTop <T extends WxytPSDTop.TileEntityPSDTop> extends Bl
 		renderAdditionalUnmodified(storedMatrixTransformations.copy(), state, facing, light);
 
 		if (!RenderTrains.shouldNotRender(pos, RenderTrains.maxTrainRenderDistance, null)) {
+			type = entity.renderType;
 			final long platformId = entity.getPlatformId(ClientData.PLATFORMS, ClientData.DATA_CACHE);
 
 			if (platformId != 0) {

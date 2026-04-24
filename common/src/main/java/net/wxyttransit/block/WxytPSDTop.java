@@ -7,11 +7,16 @@ import mtr.data.DataCache;
 import mtr.data.Platform;
 import mtr.data.RailwayData;
 import mtr.mappings.BlockDirectionalMapper;
+import mtr.mappings.BlockEntityClientSerializableMapper;
 import mtr.mappings.BlockEntityMapper;
 import mtr.mappings.EntityBlockMapper;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.model.Material;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -24,6 +29,7 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.Rotation;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
@@ -39,7 +45,10 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.wxyttransit.WxytBlockEntityTypes;
 import net.wxyttransit.WxytBlocks;
 import net.wxyttransit.WxytItems;
+import net.wxyttransit.gui.GUIPSDTopSettings;
+import org.jetbrains.annotations.NotNull;
 
+import java.util.Objects;
 import java.util.Set;
 
 public class WxytPSDTop extends BlockPSDTop implements EntityBlockMapper, IBlock {
@@ -58,20 +67,26 @@ public class WxytPSDTop extends BlockPSDTop implements EntityBlockMapper, IBlock
 
 	@Override
 	public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
+		if(player.getMainHandItem().is(WxytItems.WXYT_BRUSH.get())){
+			BlockEntity entity = world.getBlockEntity(pos);
+			System.out.println(world.isClientSide());
+			if(entity instanceof WxytPSDTop.TileEntityPSDTop top&&world.isClientSide())
+				Minecraft.getInstance().setScreen(new GUIPSDTopSettings<>(Component.translatable("gui.wxyttransit.psdTopSettings"),top));
+
+		}
 		return IBlock.checkHoldingItem(world, player, item -> {
 			if (item == Items.BRUSH.get()) {
 				world.setBlockAndUpdate(pos, state.cycle(ARROW_DIRECTION));
 				propagate(world, pos, IBlock.getStatePropertySafe(state, FACING).getClockWise(), ARROW_DIRECTION, 1);
 				propagate(world, pos, IBlock.getStatePropertySafe(state, FACING).getCounterClockWise(), ARROW_DIRECTION, 1);
-			} else if (item == WxytItems.WXYT_BRUSH.get()) {
-				world.setBlockAndUpdate(pos, state.cycle(PERSISTENT));
-			}else {
+			} else if (item==WxytItems.WXYT_BRUSH.get()) {
+			} else {
 				final boolean shouldBePersistent = IBlock.getStatePropertySafe(state, PERSISTENT) == EnumPersistent.NONE;
 				setState(world, pos, shouldBePersistent);
 				propagate(world, pos, IBlock.getStatePropertySafe(state, FACING).getClockWise(), offsetPos -> setState(world, offsetPos, shouldBePersistent), 1);
 				propagate(world, pos, IBlock.getStatePropertySafe(state, FACING).getCounterClockWise(), offsetPos -> setState(world, offsetPos, shouldBePersistent), 1);
 			}
-		}, null, Items.BRUSH.get(), net.minecraft.world.item.Items.SHEARS,WxytItems.WXYT_BRUSH.get());
+		}, null, Items.BRUSH.get(), WxytItems.WXYT_BRUSH.get(),net.minecraft.world.item.Items.SHEARS);
 	}
 
 	private void setState(Level world, BlockPos pos, boolean shouldBePersistent) {
@@ -102,7 +117,11 @@ public class WxytPSDTop extends BlockPSDTop implements EntityBlockMapper, IBlock
 
 	@Override
 	public void playerWillDestroy(Level world, BlockPos pos, BlockState state, Player player) {
-
+		final Block blockDown = world.getBlockState(pos.below()).getBlock();
+		if (blockDown instanceof BlockPSDAPGBase) {
+			blockDown.playerWillDestroy(world, pos.below(), world.getBlockState(pos.below()), player);
+			world.setBlockAndUpdate(pos.below(), Blocks.AIR.defaultBlockState());
+		}
 		super.playerWillDestroy(world, pos, state, player);
 	}
 
@@ -186,7 +205,9 @@ public class WxytPSDTop extends BlockPSDTop implements EntityBlockMapper, IBlock
 		}
 	}
 
-	public static class TileEntityRouteBase extends BlockPSDTop.TileEntityRouteBase {
+	public static class TileEntityRouteBase extends BlockEntityClientSerializableMapper {
+
+		public String renderType="sz_now";
 
 		private long cachedRefreshTime;
 		private long cachedPlatformId;
@@ -195,13 +216,49 @@ public class WxytPSDTop extends BlockPSDTop implements EntityBlockMapper, IBlock
 			super(type, pos, state);
 		}
 
-		@Override
 		public long getPlatformId(Set<Platform> platforms, DataCache dataCache) {
 			if (dataCache.needsRefresh(cachedRefreshTime)) {
 				cachedPlatformId = RailwayData.getClosePlatformId(platforms, dataCache, getBlockPos());
 				cachedRefreshTime = System.currentTimeMillis();
 			}
 			return cachedPlatformId;
+		}
+		@Override
+		public void readCompoundTag(CompoundTag tag){
+			renderType = Objects.requireNonNull(tag.get("renderType")).getAsString();
+			System.out.println(renderType);
+		}
+		@Override
+		public void writeCompoundTag(CompoundTag tag){
+			System.out.println(1467);
+			tag.putString("renderType",renderType);
+		}
+
+		public CompoundTag getTag() {
+			CompoundTag tag = null;
+			if (level != null) {
+				tag = saveWithoutMetadata();
+			}
+			return tag;
+		}
+
+
+
+
+		@Override
+		public ClientboundBlockEntityDataPacket getUpdatePacket() {
+			return ClientboundBlockEntityDataPacket.create(this);
+		}
+		public void refresh(){
+			setChanged();
+
+
+
+			if (level != null) {
+				level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), Block.UPDATE_ALL_IMMEDIATE); // 触发更新包发送
+			}
+			syncData();
+			//load(saveWithFullMetadata());
 		}
 	}
 

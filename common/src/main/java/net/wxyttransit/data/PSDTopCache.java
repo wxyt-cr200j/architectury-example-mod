@@ -8,11 +8,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class PSDTopCache {
-    public static Map<String, RegistryObject<Block>> PSDTopMap=new HashMap<>();
-    public static void register(String id,RegistryObject<Block> top){
+    public static Map<String, RegistryObject<WxytPSDTop>> PSDTopMap=new HashMap<>();
+    public static void register(String id,RegistryObject<WxytPSDTop> top){
         PSDTopMap.put(id,top);
     }
-    public static Block getBlock(String id){
+    public static WxytPSDTop get(String id){
         return PSDTopMap.get(id).get();
     }
 }

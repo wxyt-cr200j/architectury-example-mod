@@ -5,6 +5,7 @@ import dev.architectury.registry.CreativeTabRegistry;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrarManager;
 import dev.architectury.registry.registries.RegistrySupplier;
+import mtr.RegistryObject;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -13,6 +14,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.wxyttransit.block.WxytPSDTop;
 import net.wxyttransit.data.PSDTopCache;
 
 import java.util.function.Supplier;
@@ -32,7 +34,6 @@ public class WxytTransit {
                     () -> new ItemStack(WxytTransit.EXAMPLE_ITEM.get())));
 
 
-
     public  static RegistrySupplier<Block> BLOCK_WXYT_PSD_DOOR=BLOCKS.register(new ResourceLocation(MOD_ID,"psd_sz_door_0"),()->{System.out.println("fuckkkkkkkkkkkkkkkkkkkkkkkkkkkkkk");return WxytBlocks.WXYT_PSD_DOOR_0.get();});
     public  static RegistrySupplier<Block> BLOCK_WXYT_PSD_TOP=BLOCKS.register(new ResourceLocation(MOD_ID,"psd_sz_top_0"),WxytBlocks.WXYT_PSD_TOP_0::get);
 
@@ -40,16 +41,14 @@ public class WxytTransit {
     public static final RegistrySupplier<Item> EXAMPLE_ITEM = ITEMS.register("example_item", () ->
             new Item(new Item.Properties().arch$tab(WxytTransit.WXYT_MTR)));
     public static RegistrySupplier<Item> ITEM_WXYT_PSD_DOOR=ITEMS.register(new ResourceLocation(MOD_ID,"psd_sz_door_0"),WxytItems.WXYT_PSD_DOOR_ITEM::get);
-    public static RegistrySupplier<Item> ITEM_WXYT_PSD_TOP=ITEMS.register(new ResourceLocation(MOD_ID,"psd_sz_top_now_0"),WxytItems.WXYT_PSD_TOP_ITEM::get);
-
-   public static RegistrySupplier<Item> ITEM_WXYT_BRUSH=ITEMS.register(new ResourceLocation(MOD_ID,"brush"),WxytItems.WXYT_BRUSH::get);
+    public static RegistrySupplier<Item> ITEM_WXYT_BRUSH = ITEMS.register(new ResourceLocation(MOD_ID,"brush"),WxytItems.WXYT_BRUSH::get);
 
     public  static RegistrySupplier<BlockEntityType<?>> BLOCK_ENTITY_TYPE_WXYT_PSD_DOOR=BLOCK_ENTITY_TYPES.register(new ResourceLocation(MOD_ID,"psd_sz_door_0"),()->{System.out.println("shitttttttttttttttkkkkkkkk");return WxytBlockEntityTypes.PSD_DOOR_0_TILE_ENTITY.get();});
     public  static RegistrySupplier<BlockEntityType<?>> BLOCK_ENTITY_TYPE_WXYT_PSD_TOP=BLOCK_ENTITY_TYPES.register(new ResourceLocation(MOD_ID,"psd_sz_top_0"),WxytBlockEntityTypes.PSD_TOP_0_TILE_ENTITY::get);
 
 
     public static void init() {
-        PSDTopCache.PSDTopMap.put("sz_now",WxytBlocks.WXYT_PSD_TOP_0);
+        //PSDTopCache.register("sz_now_1",new RegistryObject<>(WxytPSDTop::new));
         TABS.register();
         BLOCKS.register();
         ITEMS.register();

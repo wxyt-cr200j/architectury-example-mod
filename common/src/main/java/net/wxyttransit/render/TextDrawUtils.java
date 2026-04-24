@@ -266,12 +266,12 @@ public class TextDrawUtils {
     }
 
 
-    public static int getTextWidth(Graphics2D g, Font f, String s) {
+    public static int getStringWidth(String s,Graphics2D g, Font f) {
         return g.getFontMetrics(f).stringWidth(s);
     }
 
     // ==================== 地铁线路解析（保留） ====================
-    public static LineInfo parseLine(String name) {
+    public static LineInfo parseLineName(String name) {
         if (name == null) return new LineInfo("", "");
         String reg = "^([A-Za-z]*\\d*|.)(.+)$";
         if (name.matches(reg)) {
@@ -281,11 +281,12 @@ public class TextDrawUtils {
     }
 
     public static class LineInfo {
-        public final String number;
-        public final String suffix;
-        public LineInfo(String n, String s) {
-            number = n;
-            suffix = s;
+        public final String lineNumber;
+        public final String lineSuffix;
+        public LineInfo(String lineNumber, String lineSuffix) {
+            this.lineNumber = lineNumber;
+            this.lineSuffix = lineSuffix;
         }
     }
+
 }

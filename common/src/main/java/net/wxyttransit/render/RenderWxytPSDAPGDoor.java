@@ -9,6 +9,7 @@ import mtr.mappings.BlockEntityRendererMapper;
 import mtr.mappings.ModelDataWrapper;
 import mtr.mappings.ModelMapper;
 import mtr.mappings.UtilitiesClient;
+import mtr.render.MoreRenderLayers;
 import mtr.render.RenderTrains;
 import mtr.render.StoredMatrixTransformations;
 import net.minecraft.client.Minecraft;
@@ -26,6 +27,7 @@ import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.wxyttransit.block.WxytPSDAPGDoorBase;
 import net.wxyttransit.client.BlockBenchModel;
 import net.wxyttransit.client.ModelGetter;
+import net.wxyttransit.client.SzmetroBbModel;
 
 import static net.wxyttransit.WxytTransit.MOD_ID;
 
@@ -97,20 +99,32 @@ public class RenderWxytPSDAPGDoor<T extends BlockPSDAPGDoorBase.TileEntityPSDAPG
 		poseStack.popPose();*/
 		final StoredMatrixTransformations storedMatrixTransformations = new StoredMatrixTransformations();
 		storedMatrixTransformations.add(matricesNew -> {
-			matricesNew.translate(0.5 + entity.getBlockPos().getX(), entity.getBlockPos().getY(), 0.5 + entity.getBlockPos().getZ());
-			UtilitiesClient.rotateYDegrees(matricesNew, -facing.toYRot()-90);
-			UtilitiesClient.rotateXDegrees(matricesNew, 180);
-			matricesNew.translate(0.5,0,-0.5);
+			// 1. 移到方块中心（修复偏移 0.5 格）
+			matricesNew.translate(
+					entity.getBlockPos().getX() + 0.5,
+					entity.getBlockPos().getY(),
+					entity.getBlockPos().getZ() + 0.5
+			);
+			int rot = (int)(facing.toYRot());
+			// 2. 正确旋转方向（修复南北背对背）
+			switch (rot){
+				case 0:{UtilitiesClient.rotateYDegrees(matricesNew,180);break;}
+				case 90:{UtilitiesClient.rotateYDegrees(matricesNew,90);break;}
+				case 180:{UtilitiesClient.rotateYDegrees(matricesNew,0);break;}
+				case 270:{UtilitiesClient.rotateYDegrees(matricesNew,270);break;}
+				//default:UtilitiesClient.rotateYDegrees(matricesNew,0);
+			}
 
+			// 3. 不需要任何额外偏移！删掉你注释那行
 		});
 		final StoredMatrixTransformations storedMatrixTransformations1 = storedMatrixTransformations.copy();
 		final StoredMatrixTransformations storedMatrixTransformations2 = storedMatrixTransformations.copy();
-		BlockBenchModel model1=ModelGetter.getBlockBenchModel(new ResourceLocation(loc1));
+		SzmetroBbModel model1=SzmetroBbModel.get(new ResourceLocation(loc1));
 		BlockBenchModel modelLight1 = ModelGetter.getBlockBenchModel(new ResourceLocation(locLight));
 		BlockBenchModel modelLight2 = ModelGetter.getBlockBenchModel(new ResourceLocation(locLight1));
 		//System.out.println(type);
 		//Minecraft.getInstance().getBlockRenderer().renderSingleBlock(state,mat,vertexConsumers,light,overlay);
-		RenderTrains.scheduleRender(new ResourceLocation(String.format("wxyttransit:textures/block/psd_door_shenzhen_%s_%s_%s.png",state.getValue(WxytPSDAPGDoorBase.HALF).toString().toLowerCase(),state.getValue(WxytPSDAPGDoorBase.SIDE).toString().toLowerCase(),type)), false, RenderTrains.QueuedRenderLayer.EXTERIOR, (matricesNew, vertexConsumer) -> {
+		RenderTrains.scheduleRender(new ResourceLocation(String.format("wxyttransit:textures/block/psd_door_shenzhen_%s_%s_%s.png",state.getValue(WxytPSDAPGDoorBase.HALF).toString().toLowerCase(),state.getValue(WxytPSDAPGDoorBase.SIDE).toString().toLowerCase(),type)), false,RenderTrains.QueuedRenderLayer.EXTERIOR, (matricesNew, vertexConsumer) -> {
 
 			//storedMatrixTransformationsLight.transform(matricesNew);
 
@@ -119,11 +133,11 @@ public class RenderWxytPSDAPGDoor<T extends BlockPSDAPGDoorBase.TileEntityPSDAPG
 			//UtilitiesClient.rotateYDegrees(poseStack1,facing.toYRot());
 			//matricesNew.pushPose();
 			storedMatrixTransformations.transform(matricesNew);
-			matricesNew.translate(0,0,open*(side?-1:1));
+			matricesNew.translate(open*(side?1:-1),0,0);
 			//Minecraft.getInstance().getBlockRenderer().getModelRenderer().renderModel(matricesNew.last(),vertexConsumer,state,model,1,1,1,light,overlay);
 
 		//	Minecraft.getInstance().getTextureManager().bindForSetup(new ResourceLocation(loc));
-			model1.renderToBuffer(matricesNew,vertexConsumer,light,overlay,1,1,1,1);
+			model1.render(matricesNew,light,vertexConsumer);
 
 
 			matricesNew.popPose();
@@ -144,6 +158,8 @@ public class RenderWxytPSDAPGDoor<T extends BlockPSDAPGDoorBase.TileEntityPSDAPG
 			//UtilitiesClient.rotateYDegrees(poseStack1,facing.toYRot());
 			//matricesNew.pushPose();
 			storedMatrixTransformations1.transform(matricesNew);
+			UtilitiesClient.rotateYDegrees(matricesNew,90);
+			UtilitiesClient.rotateXDegrees(matricesNew,180);
 			matricesNew.translate(0,-1,0.5);
 			//Minecraft.getInstance().getBlockRenderer().getModelRenderer().renderModel(matricesNew.last(),vertexConsumer,state,model,1,1,1,light,overlay);
 
@@ -169,6 +185,8 @@ public class RenderWxytPSDAPGDoor<T extends BlockPSDAPGDoorBase.TileEntityPSDAPG
 			//UtilitiesClient.rotateYDegrees(poseStack1,facing.toYRot());
 			//matricesNew.pushPose();
 			storedMatrixTransformations2.transform(matricesNew);
+			UtilitiesClient.rotateYDegrees(matricesNew,90);
+			UtilitiesClient.rotateXDegrees(matricesNew,180);
 			matricesNew.translate(0,-1,0.5);
 			//Minecraft.getInstance().getBlockRenderer().getModelRenderer().renderModel(matricesNew.last(),vertexConsumer,state,model,1,1,1,light,overlay);
 

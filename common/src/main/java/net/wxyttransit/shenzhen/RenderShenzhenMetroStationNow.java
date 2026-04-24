@@ -49,174 +49,190 @@ public class RenderShenzhenMetroStationNow {
 
         // ==================== drawMiddleName ====================
         private static void drawMiddleName(Graphics2D g, DataObject obj, ClientCache.PlatformRouteDetails route, int x, int wid, int hei) {
-            Color routeColor = new Color(route.routeColor);
-            int arrow = obj.arrow;
+            try {
+                Color routeColor = new Color(route.routeColor);
+                int arrow = obj.arrow;
 
-            double lineLen = wid * 0.6;
-            double lineWid = hei * 0.03;
+                double lineLen = wid * 0.6;
+                double lineWid = hei * 0.03;
 
-            String sta_cjk = TextDrawUtils.gcp(obj.station.name);
-            String sta_ncjk = TextDrawUtils.gncp(obj.station.name);
+                String sta_cjk = TextDrawUtils.gcp(obj.station.name);
+                String sta_ncjk = TextDrawUtils.gncp(obj.station.name);
 
-            float size_cjk = TextDrawUtils.calculateMaxFontSize(g, SANS, sta_cjk, 0, (int) (hei * 0.3), 0, 0, false);
-            float size_ncjk = TextDrawUtils.calculateMaxFontSize(g, SANS, sta_ncjk, 0, (int) (hei * 0.12), 0, 0, false);
+                float size_cjk = TextDrawUtils.calculateMaxFontSize(g, SANS, sta_cjk, 0, (int) (hei * 0.3), 0, 0, false);
+                float size_ncjk = TextDrawUtils.calculateMaxFontSize(g, SANS, sta_ncjk, 0, (int) (hei * 0.12), 0, 0, false);
 
-            Font font_cjk = SANS.deriveFont(size_cjk);
-            Font font_ncjk = SANS.deriveFont(size_ncjk);
+                Font font_cjk = SANS.deriveFont(size_cjk);
+                Font font_ncjk = SANS.deriveFont(size_ncjk);
 
-            g.setColor(Color.BLACK);
-            g.setFont(font_cjk);
-            TextDrawUtils.drawText(g, sta_cjk, font_cjk, x, (int) (hei * 0.32), TextDrawUtils.Align.CENTER, (int) (lineLen / 2), (int) lineWid, false, true, false);
+                g.setColor(Color.BLACK);
+                g.setFont(font_cjk);
+                TextDrawUtils.drawText(g, sta_cjk, font_cjk, x, (int) (hei * 0.32), TextDrawUtils.Align.CENTER, (int) (lineLen / 2), (int) lineWid, false, true, false);
 
-            g.setFont(font_ncjk);
-            TextDrawUtils.drawText(g, sta_ncjk, font_ncjk, x, (int) (hei * 0.48), TextDrawUtils.Align.CENTER, (int) (lineLen / 2), (int) lineWid, false, true, false);
+                g.setFont(font_ncjk);
+                TextDrawUtils.drawText(g, sta_ncjk, font_ncjk, x, (int) (hei * 0.48), TextDrawUtils.Align.CENTER, (int) (lineLen / 2), (int) lineWid, false, true, false);
 
-            g.setColor(Color.RED);
-            int ovalX = x - (int) (lineWid / 2 * 3);
-            int ovalY = (int) (hei * 0.55 + lineWid / 2 - lineWid / 2 * 3);
-            int ovalSize = (int) (lineWid / 2 * 6);
-            g.fillOval(ovalX, ovalY, ovalSize, ovalSize);
+                g.setColor(Color.RED);
+                int ovalX = x - (int) (lineWid / 2 * 3);
+                int ovalY = (int) (hei * 0.55 + lineWid / 2 - lineWid / 2 * 3);
+                int ovalSize = (int) (lineWid / 2 * 6);
+                g.fillOval(ovalX, ovalY, ovalSize, ovalSize);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
         // ==================== drawMiddleNameDest ====================
         private static void drawMiddleNameDest(Graphics2D g, DataObject obj, ClientCache.PlatformRouteDetails route, int x, int wid, int hei)  {
-            Color routeColor = new Color(route.routeColor);
-            int arrow = obj.arrow;
+            try {
+                Color routeColor = new Color(route.routeColor);
+                int arrow = obj.arrow;
 
-            double lineLen = wid * 0.6;
-            double lineWid = hei * 0.03;
+                double lineLen = wid * 0.6;
+                double lineWid = hei * 0.03;
 
-            String sta_cjk = TextDrawUtils.gcp(obj.station.name);
-            String sta_ncjk = TextDrawUtils.gncp(obj.station.name);
+                String sta_cjk = TextDrawUtils.gcp(obj.station.name);
+                String sta_ncjk = TextDrawUtils.gncp(obj.station.name);
 
-            float size_cjk = TextDrawUtils.calculateMaxFontSize(g, SANS, sta_cjk, 0, (int) (hei * 0.3), 0, 0, false);
-            float size_ncjk = TextDrawUtils.calculateMaxFontSize(g, SANS, sta_ncjk, 0, (int) (hei * 0.12), 0, 0, false);
+                float size_cjk = TextDrawUtils.calculateMaxFontSize(g, SANS, sta_cjk, 0, (int) (hei * 0.3), 0, 0, false);
+                float size_ncjk = TextDrawUtils.calculateMaxFontSize(g, SANS, sta_ncjk, 0, (int) (hei * 0.12), 0, 0, false);
 
-            Font font_cjk = SANS.deriveFont(size_cjk);
-            Font font_ncjk = SANS.deriveFont(size_ncjk);
+                Font font_cjk = SANS.deriveFont(size_cjk);
+                Font font_ncjk = SANS.deriveFont(size_ncjk);
 
-            g.setColor(Color.BLACK);
-            g.setFont(font_cjk);
-            TextDrawUtils.drawText(g, sta_cjk, font_cjk, x, (int) (hei * 0.40), TextDrawUtils.Align.CENTER, (int) (lineLen / 2), (int) lineWid, false, true, false);
+                g.setColor(Color.BLACK);
+                g.setFont(font_cjk);
+                TextDrawUtils.drawText(g, sta_cjk, font_cjk, x, (int) (hei * 0.40), TextDrawUtils.Align.CENTER, (int) (lineLen / 2), (int) lineWid, false, true, false);
 
-            g.setFont(font_ncjk);
-            TextDrawUtils.drawText(g, sta_ncjk, font_ncjk, x, (int) (hei * 0.56), TextDrawUtils.Align.CENTER, (int) (lineLen / 2), (int) lineWid, false, true, false);
+                g.setFont(font_ncjk);
+                TextDrawUtils.drawText(g, sta_ncjk, font_ncjk, x, (int) (hei * 0.56), TextDrawUtils.Align.CENTER, (int) (lineLen / 2), (int) lineWid, false, true, false);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
         // ==================== drawNextStation ====================
         private static void drawNextStation(Graphics2D g, DataObject obj, ClientCache.PlatformRouteDetails route, int x, int wid, int hei)  {
-            int arrow = obj.arrow;
-            double lineLen = wid * 0.6;
-            double lineWid = hei * 0.03;
+            try {
+                int arrow = obj.arrow;
+                double lineLen = wid * 0.6;
+                double lineWid = hei * 0.03;
 
-            Color routeColor = new Color(route.routeColor);
-            int csi = route.currentStationIndex;
-            ClientCache.PlatformRouteDetails.StationDetails last = route.stationDetails.get(csi - 1);
-            ClientCache.PlatformRouteDetails.StationDetails next = route.stationDetails.get(csi + 1);
+                Color routeColor = new Color(route.routeColor);
+                int csi = route.currentStationIndex;
+//                ClientCache.PlatformRouteDetails.StationDetails last = route.stationDetails.get(csi - 1);
+                ClientCache.PlatformRouteDetails.StationDetails next = route.stationDetails.get(csi + 1);
 
-            // 绘制站点圆圈
-            g.setColor(routeColor);
-            int outerX = x - (int) (lineWid / 2 * 3);
-            int outerY = (int) (hei * 0.55 + lineWid / 2 - lineWid / 2 * 3);
-            int outerSize = (int) (lineWid / 2 * 6);
-            g.fillOval(outerX, outerY, outerSize, outerSize);
+                // 绘制站点圆圈
+                g.setColor(routeColor);
+                int outerX = x - (int) (lineWid / 2 * 3);
+                int outerY = (int) (hei * 0.55 + lineWid / 2 - lineWid / 2 * 3);
+                int outerSize = (int) (lineWid / 2 * 6);
+                g.fillOval(outerX, outerY, outerSize, outerSize);
 
-            g.setColor(whiteColor);
-            int innerX = x - (int) lineWid;
-            int innerY = (int) (hei * 0.55 + lineWid / 2 - lineWid);
-            int innerSize = (int) (lineWid * 2);
-            g.fillOval(innerX, innerY, innerSize, innerSize);
+                g.setColor(whiteColor);
+                int innerX = x - (int) lineWid;
+                int innerY = (int) (hei * 0.55 + lineWid / 2 - lineWid);
+                int innerSize = (int) (lineWid * 2);
+                g.fillOval(innerX, innerY, innerSize, innerSize);
 
-            // 下一站站点名称
-           // System.out.println(next.stationName);
-            String sta_cjk = TextDrawUtils.gcp(next.stationName);
-            String sta_ncjk = TextDrawUtils.gncp(next.stationName);
+                // 下一站站点名称
+                // System.out.println(next.stationName);
+                String sta_cjk = TextDrawUtils.gcp(next.stationName);
+                String sta_ncjk = TextDrawUtils.gncp(next.stationName);
 
-            float size_cjk = TextDrawUtils.calculateMaxFontSize(g, SANS, sta_cjk, 0, (int) (hei * 0.15), 0, 0, false);
-            float size_ncjk = TextDrawUtils.calculateMaxFontSize(g, SANS, sta_ncjk, 0, (int) (hei * 0.06), 0, 0, false);
+                float size_cjk = TextDrawUtils.calculateMaxFontSize(g, SANS, sta_cjk, 0, (int) (hei * 0.15), 0, 0, false);
+                float size_ncjk = TextDrawUtils.calculateMaxFontSize(g, SANS, sta_ncjk, 0, (int) (hei * 0.06), 0, 0, false);
 
-            Font font_cjk = SANS.deriveFont(size_cjk);
-            Font font_ncjk = SANS.deriveFont(size_ncjk);
+                Font font_cjk = SANS.deriveFont(size_cjk);
+                Font font_ncjk = SANS.deriveFont(size_ncjk);
 
-            g.setColor(Color.BLACK);
-            g.setFont(font_cjk);
-            TextDrawUtils.drawText(g, sta_cjk, font_cjk, x, (int) (hei * 0.43), TextDrawUtils.Align.CENTER, (int) (lineLen / 3), (int) lineWid, false, true, false);
+                g.setColor(Color.BLACK);
+                g.setFont(font_cjk);
+                TextDrawUtils.drawText(g, sta_cjk, font_cjk, x, (int) (hei * 0.43), TextDrawUtils.Align.CENTER, (int) (lineLen / 3), (int) lineWid, false, true, false);
 
-            g.setFont(font_ncjk);
-            TextDrawUtils.drawText(g, sta_ncjk, font_ncjk, x, (int) (hei * 0.50), TextDrawUtils.Align.CENTER, (int) (lineLen / 3), (int) lineWid, false, true, false);
+                g.setFont(font_ncjk);
+                TextDrawUtils.drawText(g, sta_ncjk, font_ncjk, x, (int) (hei * 0.50), TextDrawUtils.Align.CENTER, (int) (lineLen / 3), (int) lineWid, false, true, false);
 
-            // 下一站 文字
-            sta_cjk = "下一站";
-            sta_ncjk = "Next Station";
+                // 下一站 文字
+                sta_cjk = "下一站";
+                sta_ncjk = "Next Station";
 
-            size_cjk = TextDrawUtils.calculateMaxFontSize(g, SANS, sta_cjk, 0, (int) (hei * 0.11), 0, 0, false);
-            size_ncjk = TextDrawUtils.calculateMaxFontSize(g, SANS, sta_ncjk, 0, (int) (hei * 0.04), 0, 0, false);
+                size_cjk = TextDrawUtils.calculateMaxFontSize(g, SANS, sta_cjk, 0, (int) (hei * 0.11), 0, 0, false);
+                size_ncjk = TextDrawUtils.calculateMaxFontSize(g, SANS, sta_ncjk, 0, (int) (hei * 0.04), 0, 0, false);
 
-            font_cjk = SANS.deriveFont(size_cjk);
-            font_ncjk = SANS.deriveFont(size_ncjk);
+                font_cjk = SANS.deriveFont(size_cjk);
+                font_ncjk = SANS.deriveFont(size_ncjk);
 
-            g.setFont(font_cjk);
-            TextDrawUtils.drawText(g, sta_cjk, font_cjk, x, (int) (hei * 0.71), TextDrawUtils.Align.CENTER, (int) (lineLen / 3), (int) lineWid, false, true, false);
+                g.setFont(font_cjk);
+                TextDrawUtils.drawText(g, sta_cjk, font_cjk, x, (int) (hei * 0.71), TextDrawUtils.Align.CENTER, (int) (lineLen / 3), (int) lineWid, false, true, false);
 
-            g.setFont(font_ncjk);
-            TextDrawUtils.drawText(g, sta_ncjk, font_ncjk, x, (int) (hei * 0.76), TextDrawUtils.Align.CENTER, (int) (lineLen / 3), (int) lineWid, false, true, false);
+                g.setFont(font_ncjk);
+                TextDrawUtils.drawText(g, sta_ncjk, font_ncjk, x, (int) (hei * 0.76), TextDrawUtils.Align.CENTER, (int) (lineLen / 3), (int) lineWid, false, true, false);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
         // ==================== drawLastStation ====================
         private static void drawLastStation(Graphics2D g, DataObject obj, ClientCache.PlatformRouteDetails route, int x, int wid, int hei)  {
-            Color routeColor = new Color(route.routeColor);
-            int csi = route.currentStationIndex;
-            ClientCache.PlatformRouteDetails.StationDetails last = route.stationDetails.get(csi - 1);
-            ClientCache.PlatformRouteDetails.StationDetails next = route.stationDetails.get(csi + 1);
-            int arrow = obj.arrow;
+            try {
+                Color routeColor = new Color(route.routeColor);
+                int csi = route.currentStationIndex;
+                ClientCache.PlatformRouteDetails.StationDetails last = route.stationDetails.get(csi - 1);
+               // ClientCache.PlatformRouteDetails.StationDetails next = route.stationDetails.get(csi + 1);
+                int arrow = obj.arrow;
 
-            double lineLen = wid * 0.6;
-            double lineWid = hei * 0.03;
+                double lineLen = wid * 0.6;
+                double lineWid = hei * 0.03;
 
-            g.setColor(Color.LIGHT_GRAY);
-            int outerX = x - (int) (lineWid / 2 * 3);
-            int outerY = (int) (hei * 0.55 + lineWid / 2 - lineWid / 2 * 3);
-            int outerSize = (int) (lineWid / 2 * 6);
-            g.fillOval(outerX, outerY, outerSize, outerSize);
+                g.setColor(Color.LIGHT_GRAY);
+                int outerX = x - (int) (lineWid / 2 * 3);
+                int outerY = (int) (hei * 0.55 + lineWid / 2 - lineWid / 2 * 3);
+                int outerSize = (int) (lineWid / 2 * 6);
+                g.fillOval(outerX, outerY, outerSize, outerSize);
 
-            g.setColor(whiteColor);
-            int innerX = x - (int) lineWid;
-            int innerY = (int) (hei * 0.55 + lineWid / 2 - lineWid);
-            int innerSize = (int) (lineWid * 2);
-            g.fillOval(innerX, innerY, innerSize, innerSize);
+                g.setColor(whiteColor);
+                int innerX = x - (int) lineWid;
+                int innerY = (int) (hei * 0.55 + lineWid / 2 - lineWid);
+                int innerSize = (int) (lineWid * 2);
+                g.fillOval(innerX, innerY, innerSize, innerSize);
 
-            // 上一站站点名称
-            String sta_cjk = TextDrawUtils.gcp(last.stationName);
-            String sta_ncjk = TextDrawUtils.gncp(last.stationName);
+                // 上一站站点名称
+                String sta_cjk = TextDrawUtils.gcp(last.stationName);
+                String sta_ncjk = TextDrawUtils.gncp(last.stationName);
 
-            float size_cjk = TextDrawUtils.calculateMaxFontSize(g, SANS, sta_cjk, 0, (int) (hei * 0.15), 0, 0, false);
-            float size_ncjk = TextDrawUtils.calculateMaxFontSize(g, SANS, sta_ncjk, 0, (int) (hei * 0.06), 0, 0, false);
+                float size_cjk = TextDrawUtils.calculateMaxFontSize(g, SANS, sta_cjk, 0, (int) (hei * 0.15), 0, 0, false);
+                float size_ncjk = TextDrawUtils.calculateMaxFontSize(g, SANS, sta_ncjk, 0, (int) (hei * 0.06), 0, 0, false);
 
-            Font font_cjk = SANS.deriveFont(size_cjk);
-            Font font_ncjk = SANS.deriveFont(size_ncjk);
+                Font font_cjk = SANS.deriveFont(size_cjk);
+                Font font_ncjk = SANS.deriveFont(size_ncjk);
 
-            g.setColor(Color.LIGHT_GRAY);
-            g.setFont(font_cjk);
-            TextDrawUtils.drawText(g, sta_cjk, font_cjk, x, (int) (hei * 0.43), TextDrawUtils.Align.CENTER, (int) (lineLen / 3), (int) lineWid, false, true, false);
+                g.setColor(Color.LIGHT_GRAY);
+                g.setFont(font_cjk);
+                TextDrawUtils.drawText(g, sta_cjk, font_cjk, x, (int) (hei * 0.43), TextDrawUtils.Align.CENTER, (int) (lineLen / 3), (int) lineWid, false, true, false);
 
-            g.setFont(font_ncjk);
-            TextDrawUtils.drawText(g, sta_ncjk, font_ncjk, x, (int) (hei * 0.50), TextDrawUtils.Align.CENTER, (int) (lineLen / 3), (int) lineWid, false, true, false);
+                g.setFont(font_ncjk);
+                TextDrawUtils.drawText(g, sta_ncjk, font_ncjk, x, (int) (hei * 0.50), TextDrawUtils.Align.CENTER, (int) (lineLen / 3), (int) lineWid, false, true, false);
 
-            // 上一站 文字
-            sta_cjk = "上一站";
-            sta_ncjk = "Previous Station";
+                // 上一站 文字
+                sta_cjk = "上一站";
+                sta_ncjk = "Previous Station";
 
-            size_cjk = TextDrawUtils.calculateMaxFontSize(g, SANS, sta_cjk, 0, (int) (hei * 0.11), 0, 0, false);
-            size_ncjk = TextDrawUtils.calculateMaxFontSize(g, SANS, sta_ncjk, 0, (int) (hei * 0.04), 0, 0, false);
+                size_cjk = TextDrawUtils.calculateMaxFontSize(g, SANS, sta_cjk, 0, (int) (hei * 0.11), 0, 0, false);
+                size_ncjk = TextDrawUtils.calculateMaxFontSize(g, SANS, sta_ncjk, 0, (int) (hei * 0.04), 0, 0, false);
 
-            font_cjk = SANS.deriveFont(size_cjk);
-            font_ncjk = SANS.deriveFont(size_ncjk);
+                font_cjk = SANS.deriveFont(size_cjk);
+                font_ncjk = SANS.deriveFont(size_ncjk);
 
-            g.setFont(font_cjk);
-            TextDrawUtils.drawText(g, sta_cjk, font_cjk, x, (int) (hei * 0.71), TextDrawUtils.Align.CENTER, (int) (lineLen / 3), (int) lineWid, false, true, false);
+                g.setFont(font_cjk);
+                TextDrawUtils.drawText(g, sta_cjk, font_cjk, x, (int) (hei * 0.71), TextDrawUtils.Align.CENTER, (int) (lineLen / 3), (int) lineWid, false, true, false);
 
-            g.setFont(font_ncjk);
-            TextDrawUtils.drawText(g, sta_ncjk, font_ncjk, x, (int) (hei * 0.76), TextDrawUtils.Align.CENTER, (int) (lineLen / 3), (int) lineWid, false, true, false);
+                g.setFont(font_ncjk);
+                TextDrawUtils.drawText(g, sta_ncjk, font_ncjk, x, (int) (hei * 0.76), TextDrawUtils.Align.CENTER, (int) (lineLen / 3), (int) lineWid, false, true, false);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
         // ==================== drawBlank（主绘制逻辑） ====================
@@ -253,6 +269,7 @@ public class RenderShenzhenMetroStationNow {
                 g.translate(0, (int) ((hei / scale - hei) / 2));
             }
 
+            try{
             // 站点逻辑
             if (csi == 0 && csi == route.stationDetails.size() - 1) {
                 drawMiddleName(g,obj, route, wid / 2, wid, hei);
@@ -335,6 +352,8 @@ public class RenderShenzhenMetroStationNow {
                 }
 
                 drawMiddleName(g, obj, route, wid / 2, wid, hei);
+            }} catch (Exception e) {
+                e.printStackTrace();
             }
 
             // 恢复画布
