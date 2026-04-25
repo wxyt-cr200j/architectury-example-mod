@@ -32,12 +32,10 @@ public class WxytItemPSDAPGBase extends Item implements IBlock {
 
     private final EnumPSDAPGItem item;
     private final EnumPSDAPGType type;
-    private final String topType;
-    public WxytItemPSDAPGBase(EnumPSDAPGItem item, EnumPSDAPGType type,String topType) {
+    public WxytItemPSDAPGBase(EnumPSDAPGItem item, EnumPSDAPGType type) {
         super(new Properties().arch$tab(WXYT_MTR));
         this.item = item;
         this.type = type;
-        this.topType=topType;
     }
 
     @Override
@@ -88,6 +86,10 @@ public class WxytItemPSDAPGBase extends Item implements IBlock {
                 switch (item){
                     case WXYT_PSD_DOOR -> {
                         return WxytBlocks.WXYT_PSD_DOOR_0.get().defaultBlockState();
+
+                    }
+                    case WXYT_PSD_GLASS -> {
+                        return WxytBlocks.WXYT_PSD_GLASS_0.get().defaultBlockState();
                     }
                 }
             default:
@@ -136,7 +138,9 @@ public class WxytItemPSDAPGBase extends Item implements IBlock {
 
     public enum EnumPSDAPGItem implements StringRepresentable {
 
-        WXYT_PSD_DOOR("wxyt_psd_door",true);
+        WXYT_PSD_DOOR("wxyt_psd_door",true),
+        WXYT_PSD_GLASS("wxyt_psd_glass",false);
+
         private final String name;
         private final boolean isDoor;
 

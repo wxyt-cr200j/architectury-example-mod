@@ -1,0 +1,22 @@
+{
+  "item.wxyttransit.example_item": "欢迎使用wxyt的交通模组",
+  "item.wxyttransit.psd_sz_door_0":"深圳地铁屏蔽门（门）",
+  "item.wxyttransit.psd_sz_glass_0": "深圳地铁屏蔽门（玻璃）",
+  "item.wxyttransit.brush": "wxyt的神秘刷子",
+  "item.wxyttransit.setter": "批量设置器",
+  "itemGroup.wxyttransit.wxyt_mtr": "wxyt交通：方块",
+  "renderScript.sz_now": "深圳地铁屏蔽门吊板（当前站）",
+  "renderScript.sz_route": "深圳地铁屏蔽门吊板（线路）",
+  "renderScript.sz_none": "深圳地铁屏蔽门吊板（空）",
+  "renderScript.sz_destination": "深圳地铁屏蔽门吊板（终点站）",
+  "psdDistrict.shenzhen": "深圳风格",
+  "psdLightDistrict.shenzhen": "深圳风格",
+  "psdType.shenzhen_0": "深圳经典屏蔽门",
+  "psdLightType.shenzhen_1": "深圳一号线门灯",
+  "gui.wxyttransit.chooseRenderType": "点击选择渲染脚本...",
+  "gui.wxyttransit.chooseType": "点击选择类型...",
+  "gui.wxyttransit.chooseLightType": "点击选择门灯类型...",
+  "gui.wxyttransit.chooseDistrict": "点击选择地区...",
+  "gui.wxyttransit.chooseLightDistrict": "点击选择门灯地区..."
+
+}

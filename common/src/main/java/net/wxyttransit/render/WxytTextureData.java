@@ -32,11 +32,38 @@ public class WxytTextureData {
         if(map.containsKey(string))return map.get(string);
         else return (DataObject,GraphicsTexture) ->{};
     }
+    public GraphicsTexture getTexture(String string,DataObject obj,int w,int h,boolean forceRefresh){
+        GraphicsTexture gt;
+        if(textureHashMap.containsKey(new Pair<>(String.format("%s_%s_%s",string,w,h),obj.id))){
+            gt=textureHashMap.get(new Pair<>(String.format("%s_%s_%s",string,w,h),obj.id));
+            if(gt.isClosed()){
+                System.out.println(15623);
+                gt=new GraphicsTexture(w,h);
+                textureHashMap.put(new Pair<>(String.format("%s_%s_%s",string,w,h),obj.id),gt);
+                resourcesNeedToRefresh.add(gt);
+            }
+            // System.out.println(15);
+        }else{
+            gt=new GraphicsTexture(w,h);
+            textureHashMap.put(new Pair<>(String.format("%s_%s_%s",string,w,h),obj.id),gt);
+            resourcesNeedToRefresh.add(gt);
+            // System.out.println(16);
+        }
+        if(resourcesNeedToRefresh.contains(gt)||forceRefresh){
+            getRenderConsumer(string).accept(obj,gt);
+            if(resourcesNeedToRefresh.contains(gt))resourcesNeedToRefresh.remove(gt);
+        }
+        return gt;
+    }
+    public ResourceLocation getTextureLocation(String string, DataObject obj, int w, int h,boolean forceRefresh){
+        return getTexture(string, obj, w, h,forceRefresh).identifier;
+    }
     public GraphicsTexture getTexture(String string,DataObject obj,int w,int h){
         GraphicsTexture gt;
         if(textureHashMap.containsKey(new Pair<>(String.format("%s_%s_%s",string,w,h),obj.id))){
             gt=textureHashMap.get(new Pair<>(String.format("%s_%s_%s",string,w,h),obj.id));
             if(gt.isClosed()){
+                System.out.println(15623);
                 gt=new GraphicsTexture(w,h);
                 textureHashMap.put(new Pair<>(String.format("%s_%s_%s",string,w,h),obj.id),gt);
                 resourcesNeedToRefresh.add(gt);

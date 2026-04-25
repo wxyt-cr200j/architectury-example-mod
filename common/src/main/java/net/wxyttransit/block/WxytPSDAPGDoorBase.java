@@ -6,9 +6,11 @@ import mtr.block.IBlock;
 import mtr.data.IGui;
 import mtr.mappings.EntityBlockMapper;
 import mtr.mappings.Text;
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -30,6 +32,8 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.wxyttransit.WxytItems;
+import net.wxyttransit.gui.GUIPSDAPGDoorSettings;
 import org.jetbrains.annotations.NotNull;
 
 public abstract class WxytPSDAPGDoorBase extends BlockPSDAPGDoorBase implements EntityBlockMapper {
@@ -83,6 +87,13 @@ public abstract class WxytPSDAPGDoorBase extends BlockPSDAPGDoorBase implements 
 
 	@Override
 	public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
+		if(player.getMainHandItem().is( WxytItems.WXYT_BRUSH.get())){
+			BlockEntity entity = world.getBlockEntity(pos);
+
+			if(entity instanceof WxytPSDAPGDoorBase.TileEntityPSDAPGDoorBase base&&world.isClientSide) {
+				Minecraft.getInstance().setScreen(new GUIPSDAPGDoorSettings<>(Component.translatable("gui.wxyttransit.psdapgsettings"),base ));
+			}
+		}
 		return IBlock.checkHoldingBrush(world, player, () -> {
 			final boolean unlocked = IBlock.getStatePropertySafe(state, UNLOCKED);
 			for (int y = -1; y <= 1; y++) {
@@ -131,7 +142,10 @@ public abstract class WxytPSDAPGDoorBase extends BlockPSDAPGDoorBase implements 
 		private int open;
 		private float openClient;
 		private boolean temp = true;
-
+		public Integer type = 0;
+		public Integer light_type = 1;
+		public String district = "shenzhen";
+		public String lightDistrict = "shenzhen";
 		private static final String KEY_OPEN = "open";
 		private static final String KEY_TEMP = "temp";
 
@@ -143,12 +157,20 @@ public abstract class WxytPSDAPGDoorBase extends BlockPSDAPGDoorBase implements 
 		public void readCompoundTag(CompoundTag compoundTag) {
 			open = compoundTag.getInt(KEY_OPEN);
 			temp = compoundTag.getBoolean(KEY_TEMP);
+			type = compoundTag.getInt("type");
+			light_type = compoundTag.getInt("light_type");
+			district = compoundTag.getString("district");
+			lightDistrict = compoundTag.getString("light_district");
 		}
 
 		@Override
 		public void writeCompoundTag(CompoundTag compoundTag) {
 			compoundTag.putInt(KEY_OPEN, open);
 			compoundTag.putBoolean(KEY_TEMP, temp);
+			compoundTag.putInt("type",type);
+			compoundTag.putInt("light_type",light_type);
+			compoundTag.putString("district",district);
+			compoundTag.putString("light_district",lightDistrict);
 			if (temp && level != null) {
 				level.setBlockAndUpdate(worldPosition, level.getBlockState(worldPosition).setValue(TEMP, false));
 				temp = false;
@@ -183,6 +205,18 @@ public abstract class WxytPSDAPGDoorBase extends BlockPSDAPGDoorBase implements 
 			return openClient / 32;
 		}
 
+		public void refresh(){
+			setChanged();
+
+
+
+			if (level != null) {
+				level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), Block.UPDATE_ALL_IMMEDIATE); // 触发更新包发送
+			}
+			//syncData(this);
+			//	load(saveWithoutMetadata());
+			//load(saveWithFullMetadata());
+		}
 		public boolean isOpen() {
 			return open > 0;
 		}

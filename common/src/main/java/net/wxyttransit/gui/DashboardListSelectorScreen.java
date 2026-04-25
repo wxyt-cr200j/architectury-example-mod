@@ -8,13 +8,13 @@ import net.wxyttransit.data.NameColorDataBase;
 import mtr.mappings.ScreenMapper;
 import mtr.mappings.Text;
 import mtr.mappings.UtilitiesClient;
-import net.wxyttransit.gui.DashboardList;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 
 public class DashboardListSelectorScreen extends ScreenMapper implements IGui {
 
@@ -126,7 +126,7 @@ public class DashboardListSelectorScreen extends ScreenMapper implements IGui {
 
 		final List<NameColorDataBase> selectedData = new ArrayList<>();
 		for (final String selectedId : selectedIds) {
-			allData.stream().filter(data -> data.id == selectedId).findFirst().ifPresent(selectedData::add);
+			allData.stream().filter(data -> Objects.equals(data.id, selectedId)).findFirst().ifPresent(selectedData::add);
 		}
 
 		availableList.setData(availableData, false, false, false, false, true, false);

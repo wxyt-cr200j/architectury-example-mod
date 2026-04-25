@@ -3,16 +3,16 @@ package net.wxyttransit.render;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import mtr.MTRClient;
-import mtr.block.*;
+import mtr.block.BlockPSDAPGDoorBase;
+import mtr.block.BlockPSDAPGGlassBase;
+import mtr.block.IBlock;
 import mtr.data.IGui;
 import mtr.mappings.BlockEntityRendererMapper;
 import mtr.mappings.ModelDataWrapper;
 import mtr.mappings.ModelMapper;
 import mtr.mappings.UtilitiesClient;
-import mtr.render.MoreRenderLayers;
 import mtr.render.RenderTrains;
 import mtr.render.StoredMatrixTransformations;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
@@ -24,21 +24,21 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
-import net.wxyttransit.block.WxytPSDAPGDoorBase;
-import net.wxyttransit.client.BlockBenchModel;
+import net.wxyttransit.block.WxytPSDAPGGlassBase;
+import net.wxyttransit.block.WxytPSDAPGGlassBase;
 import net.wxyttransit.client.ModelGetter;
 import net.wxyttransit.client.SzmetroBbModel;
 
 import static net.wxyttransit.WxytTransit.MOD_ID;
 
-public class RenderWxytPSDAPGDoor<T extends BlockPSDAPGDoorBase.TileEntityPSDAPGDoorBase> extends BlockEntityRendererMapper<T> implements IGui, IBlock {
+public class RenderWxytPSDAPGGlass<T extends WxytPSDAPGGlassBase.TileEntityPSDAPGGlassBase> extends BlockEntityRendererMapper<T> implements IGui, IBlock {
 
 	private int type;
 	private int lightType;
 	private String district;
 	private String lightDistrict;
 
-	public RenderWxytPSDAPGDoor(BlockEntityRenderDispatcher dispatcher, String district, int type, int lightType) {
+	public RenderWxytPSDAPGGlass(BlockEntityRenderDispatcher dispatcher, String district, int type, int lightType) {
 		super(dispatcher);
 		this.type = type;
         this.lightType = lightType;
@@ -54,27 +54,17 @@ public class RenderWxytPSDAPGDoor<T extends BlockPSDAPGDoorBase.TileEntityPSDAPG
 			return;
 		}
 
-		if(entity instanceof WxytPSDAPGDoorBase.TileEntityPSDAPGDoorBase base){
+		T base = entity;
 			if(base.district!=null)district = base.district;
-			if(base.lightDistrict!=null)lightDistrict = base.lightDistrict;
 			if(base.type!=null)type = base.type;
-			if(base.light_type!=null)lightType = base.light_type;
-		}
+
 		final BlockPos pos = entity.getBlockPos();
 		final BlockState state=entity.getBlockState();
-		final Direction facing = IBlock.getStatePropertySafe(world, pos, WxytPSDAPGDoorBase.FACING);
-		final boolean side = IBlock.getStatePropertySafe(world, pos, WxytPSDAPGDoorBase.SIDE) == EnumSide.RIGHT;
-		final boolean half = IBlock.getStatePropertySafe(world, pos, WxytPSDAPGDoorBase.HALF) == DoubleBlockHalf.UPPER;
-		final boolean end = IBlock.getStatePropertySafe(world, pos, WxytPSDAPGDoorBase.END);
-		final boolean unlocked = IBlock.getStatePropertySafe(world, pos, WxytPSDAPGDoorBase.UNLOCKED);
-		final float open = Math.min(entity.getOpen(MTRClient.getLastFrameDuration()), type >= 3 ? 0.75F : 1);
-		//String loc =String.format("wxyttransit:textures/block/psd_door_shenzhen_%s_%s.png",state.getValue(WxytPSDAPGDoorBase.HALF).toString().toLowerCase(),state.getValue(WxytPSDAPGDoorBase.SIDE).toString().toLowerCase());
-		String loc1 =String.format("wxyttransit:models/block/psd_door_%s_%s_%s_%s.bbmodel",district,state.getValue(WxytPSDAPGDoorBase.HALF).toString().toLowerCase(),state.getValue(WxytPSDAPGDoorBase.SIDE).toString().toLowerCase(),type);
-		String locLight = String.format("wxyttransit:models/block/psd_light_%s_bone_%s.bbmodel",lightDistrict,lightType);
-		String locLight1 = String.format("wxyttransit:models/block/psd_light_%s_light_%s.bbmodel",lightDistrict,lightType);
+		final Direction facing = IBlock.getStatePropertySafe(world, pos, WxytPSDAPGGlassBase.FACING);
+		//String loc =String.format("wxyttransit:textures/block/psd_door_shenzhen_%s_%s.png",state.getValue(WxytPSDAPGGlassBase.HALF).toString().toLowerCase(),state.getValue(WxytPSDAPGGlassBase.SIDE).toString().toLowerCase());
+		String loc1 =String.format("wxyttransit:models/block/psd_glass_%s_%s_%s_%s.bbmodel",district,state.getValue(WxytPSDAPGGlassBase.HALF).toString().toLowerCase(),state.getValue(WxytPSDAPGGlassBase.SIDE_EXTENDED).toString().toLowerCase(),type);
 		final BakedModel model= ModelGetter.getBakedModel(state,pos);
-		final BakedModel modelLight = ModelGetter.getBakedModel(new ResourceLocation(MOD_ID,"block/psd_sz_top_light_0"),String.format("facing=%s",facing.toString().toLowerCase()));
-		/*if (IBlock.getStatePropertySafe(world, pos, WxytPSDAPGDoorBase.TEMP)) {
+		/*if (IBlock.getStatePropertySafe(world, pos, WxytPSDAPGGlassBase.TEMP)) {
 			return;
 		}*/
 
@@ -129,11 +119,9 @@ public class RenderWxytPSDAPGDoor<T extends BlockPSDAPGDoorBase.TileEntityPSDAPG
 		final StoredMatrixTransformations storedMatrixTransformations1 = storedMatrixTransformations.copy();
 		final StoredMatrixTransformations storedMatrixTransformations2 = storedMatrixTransformations.copy();
 		SzmetroBbModel model1=SzmetroBbModel.get(new ResourceLocation(loc1));
-		SzmetroBbModel modelLight1 = SzmetroBbModel.get(new ResourceLocation(locLight));
-		SzmetroBbModel modelLight2 = SzmetroBbModel.get(new ResourceLocation(locLight1));
 		//System.out.println(type);
 		//Minecraft.getInstance().getBlockRenderer().renderSingleBlock(state,mat,vertexConsumers,light,overlay);
-		RenderTrains.scheduleRender(new ResourceLocation(String.format("wxyttransit:textures/block/psd_door_%s_%s_%s_%s.png",district,state.getValue(WxytPSDAPGDoorBase.HALF).toString().toLowerCase(),state.getValue(WxytPSDAPGDoorBase.SIDE).toString().toLowerCase(),type)), false,RenderTrains.QueuedRenderLayer.EXTERIOR, (matricesNew, vertexConsumer) -> {
+		RenderTrains.scheduleRender(new ResourceLocation(String.format("wxyttransit:textures/block/psd_glass_%s_%s_%s_%s.png",district,state.getValue(WxytPSDAPGGlassBase.HALF).toString().toLowerCase(),state.getValue(WxytPSDAPGGlassBase.SIDE_EXTENDED).toString().toLowerCase(),type)), false,RenderTrains.QueuedRenderLayer.EXTERIOR, (matricesNew, vertexConsumer) -> {
 
 			//storedMatrixTransformationsLight.transform(matricesNew);
 
@@ -142,67 +130,10 @@ public class RenderWxytPSDAPGDoor<T extends BlockPSDAPGDoorBase.TileEntityPSDAPG
 			//UtilitiesClient.rotateYDegrees(poseStack1,facing.toYRot());
 			//matricesNew.pushPose();
 			storedMatrixTransformations.transform(matricesNew);
-			matricesNew.translate(open*(side?1:-1),0,0);
 			//Minecraft.getInstance().getBlockRenderer().getModelRenderer().renderModel(matricesNew.last(),vertexConsumer,state,model,1,1,1,light,overlay);
 
 		//	Minecraft.getInstance().getTextureManager().bindForSetup(new ResourceLocation(loc));
 			if(model1!=null)model1.render(matricesNew,light,vertexConsumer);
-
-
-			matricesNew.popPose();
-
-			//matricesNew.translate(open  * (side ? -1 : 1), 0, 0);
-			//Minecraft.getInstance().getBlockRenderer().getModelRenderer().renderModel(matricesNew.last(),vertexConsumer,state,model,1,1,1,light,overlay);
-
-			//RenderBlockModel.renderBakedModel(matricesNew, vertexConsumer,world,state,pos,model);
-			//Minecraft.getInstance().getBlockRenderer().renderSingleBlock(state,mat,vertexConsumers,light,overlay);
-			//matricesNew.popPose();
-		});
-		RenderTrains.scheduleRender(new ResourceLocation(String.format("wxyttransit:textures/block/psd_light_%s_bone_%s.png",lightDistrict,lightType)),false,RenderTrains.QueuedRenderLayer.EXTERIOR,(matricesNew, vertexConsumer) -> {
-
-			//storedMatrixTransformationsLight.transform(matricesNew);
-
-			//UtilitiesClient.rotateYDegrees(poseStack1,-facing.toYRot());
-
-			//UtilitiesClient.rotateYDegrees(poseStack1,facing.toYRot());
-			//matricesNew.pushPose();
-			storedMatrixTransformations1.transform(matricesNew);
-			UtilitiesClient.rotateYDegrees(matricesNew,90);
-			UtilitiesClient.rotateXDegrees(matricesNew,180);
-			UtilitiesClient.rotateZDegrees(matricesNew,180);
-			matricesNew.translate(0,1,0.5);
-			//Minecraft.getInstance().getBlockRenderer().getModelRenderer().renderModel(matricesNew.last(),vertexConsumer,state,model,1,1,1,light,overlay);
-
-			//	Minecraft.getInstance().getTextureManager().bindForSetup(new ResourceLocation(loc));
-			if(half&&side&&modelLight1!=null)modelLight1.render(matricesNew,light,vertexConsumer);
-
-
-			matricesNew.popPose();
-
-			//matricesNew.translate(open  * (side ? -1 : 1), 0, 0);
-			//Minecraft.getInstance().getBlockRenderer().getModelRenderer().renderModel(matricesNew.last(),vertexConsumer,state,model,1,1,1,light,overlay);
-
-			//RenderBlockModel.renderBakedModel(matricesNew, vertexConsumer,world,state,pos,model);
-			//Minecraft.getInstance().getBlockRenderer().renderSingleBlock(state,mat,vertexConsumers,light,overlay);
-			//matricesNew.popPose();
-		});
-		RenderTrains.scheduleRender(new ResourceLocation(String.format("wxyttransit:textures/block/psd_light_%s_light_%s.png",lightDistrict,lightType)),false,open>0?RenderTrains.QueuedRenderLayer.LIGHT:RenderTrains.QueuedRenderLayer.EXTERIOR,(matricesNew, vertexConsumer) -> {
-
-			//storedMatrixTransformationsLight.transform(matricesNew);
-
-			//UtilitiesClient.rotateYDegrees(poseStack1,-facing.toYRot());
-
-			//UtilitiesClient.rotateYDegrees(poseStack1,facing.toYRot());
-			//matricesNew.pushPose();
-			storedMatrixTransformations2.transform(matricesNew);
-			UtilitiesClient.rotateYDegrees(matricesNew,90);
-			UtilitiesClient.rotateXDegrees(matricesNew,180);
-			UtilitiesClient.rotateZDegrees(matricesNew,180);
-			matricesNew.translate(0,1,0.5);
-			//Minecraft.getInstance().getBlockRenderer().getModelRenderer().renderModel(matricesNew.last(),vertexConsumer,state,model,1,1,1,light,overlay);
-
-			//	Minecraft.getInstance().getTextureManager().bindForSetup(new ResourceLocation(loc));
-			if(half&&side&&modelLight2!=null)modelLight2.render(matricesNew,light,vertexConsumer);
 
 
 			matricesNew.popPose();

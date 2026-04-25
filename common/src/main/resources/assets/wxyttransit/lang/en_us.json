@@ -1,3 +1,25 @@
 {
-  "item.wxyttransit.example_item": "Wxyt Item"
+  "item.wxyttransit.example_item": "Welcome!",
+  "item.wxyttransit.psd_sz_door_0":"Shenzhen Metro PSD Door",
+  "item.wxyttransit.psd_sz_glass_0": "Shenzhen Metro PSD Glass",
+  "item.wxyttransit.brush": "Special Brush",
+  "item.wxyttransit.setter": "Setter",
+  "itemGroup.wxyttransit.wxyt_mtr": "Wxyt Transit Blocks",
+  "renderScript.sz_now": "Shenzhen Metro's PSD Top(This Station)",
+  "renderScript.sz_route": "Shenzhen Metro's PSD top(Whole Route)",
+  "renderScript.sz_none": "Shenzhen Metro's PSD Top(None)",
+  "renderScript.sz_destination": "Shenzhen Metro's PSD top(Destination)",
+  "psdDistrict.shenzhen": "Shenzhen",
+  "psdLightDistrict.shenzhen": "Shenzhen",
+  "psdType.shenzhen_0": "Shenzhen PSD Basic",
+  "psdLightType.shenzhen_1": "Shenzhen PSD light of Line 1",
+  "gui.wxyttransit.chooseRenderType": "Click there to choose Render Script...",
+  "gui.wxyttransit.chooseType": "Click there to choose Type...",
+  "gui.wxyttransit.chooseLightType": "Click there to choose Light Type...",
+  "gui.wxyttransit.chooseDistrict": "Click there to choose District...",
+  "gui.wxyttransit.chooseLightDistrict": "Click there to choose Light District..."
+
+
+
+
 }

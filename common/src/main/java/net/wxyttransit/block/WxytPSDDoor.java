@@ -26,17 +26,17 @@ public class WxytPSDDoor extends WxytPSDAPGDoorBase {
 	}
 
 	@Override
+	public Item asItem() {
+		return  WxytItems.WXYT_PSD_DOOR_ITEM.get();
+	}
+
+	@Override
 	public BlockEntityMapper createBlockEntity(BlockPos pos, BlockState state) {
 		return new TileEntityPSDDoor(style, pos, state);
 	}
 
 
 
-
-	@Override
-	public Item asItem() {
-		return  WxytItems.WXYT_PSD_DOOR_ITEM.get();
-	}
 
 	@Override
 	public @Nullable BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {

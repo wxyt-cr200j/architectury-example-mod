@@ -14,8 +14,6 @@ import java.awt.*;
 import java.awt.geom.AffineTransform;
 
 public class RenderShenzhenMetroStationNow {
-    static Font SOURCE_HAN_SANS_CN_BOLD = TextDrawUtils.getFont(new ResourceLocation("wxyttransit:font/source-han-sans-cn/source-han-sans-cn-bold.otf"));
-    static Font ROBOTO_BOLD = TextDrawUtils.getFont(new ResourceLocation("wxyttransit:font/roboto/roboto-bold.otf"));
     static Font SANS = TextDrawUtils.getFont(new ResourceLocation("wxyttransit:font/lanting.ttf"));
 
     public static void draw(DataObject obj, GraphicsTexture gt){

@@ -5,13 +5,17 @@ import mtr.client.ClientCache;
 import mtr.mappings.Utilities;
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.packs.resources.Resource;
+import net.wxyttransit.client.GraphicsTexture;
 import org.apache.http.util.TextUtils;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.font.LineBreakMeasurer;
 import java.awt.font.TextAttribute;
 import java.awt.font.TextLayout;
 import java.awt.geom.AffineTransform;
+import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -25,6 +29,23 @@ import java.util.Map;
  */
 public class TextDrawUtils {
 
+    public static InputStream readStream(ResourceLocation identifier) throws IOException {
+        final java.util.List<Resource> resources = Minecraft.getInstance().getResourceManager().getResourceStack(identifier);
+        if(resources.isEmpty())return null;
+        return Utilities.getInputStream(resources.get(0));
+    }
+    public static BufferedImage readBufferedImage(ResourceLocation identifier) {
+        try (InputStream is = readStream(identifier)) {
+            if (is != null) {
+                return GraphicsTexture.createArgbBufferedImage(ImageIO.read(is));
+            }
+            else return new BufferedImage(100,100,BufferedImage.TYPE_INT_ARGB);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+        return new BufferedImage(100,100,BufferedImage.TYPE_INT_ARGB);
+    }
     public static Font getFont(ResourceLocation rl) {
         try {
             // 关键修复：先把字体读成 byte[]，避免流被关闭或解析不完整
