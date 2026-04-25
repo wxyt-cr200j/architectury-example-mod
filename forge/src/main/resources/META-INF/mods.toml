@@ -8,7 +8,9 @@ modId = "wxyttransit"
 version = "${version}"
 displayName = "Wxyt Mod"
 authors = "Me!"
+mainClass = "net.wxyttransit.forge.WxytTransitForge"
 description = '''
+
 This is an example description! Tell everyone what your mod is about!
 '''
 #logoFile = ""

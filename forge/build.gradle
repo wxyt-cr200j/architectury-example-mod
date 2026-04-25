@@ -6,7 +6,6 @@ architectury {
     platformSetupLoomIde()
     forge()
 }
-
 loom {
     accessWidenerPath = project(":common").loom.accessWidenerPath
 
@@ -43,10 +42,10 @@ processResources {
         expand "version": project.version
     }
 }
-
+tasks.withType(JavaCompile){
+    options.encoding = "UTF-8"
+}
 shadowJar {
-    exclude "fabric.mod.json"
-    exclude "architectury.common.json"
 
     configurations = [project.configurations.shadowCommon]
     archiveClassifier = "dev-shadow"

@@ -7,9 +7,8 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.wxyttransit.WxytTransit;
 import net.wxyttransit.WxytTransitClient;
 
-@Mod(WxytTransit.MOD_ID)
 public class WxytTransitForgeClient {
     public static void init(FMLClientSetupEvent event){
-        System.out.println("fuck youuuuuuuuuuuuuuuuuuuuuuuu");event.enqueueWork(WxytTransitClient::initClient);
+        event.enqueueWork(WxytTransitClient::initClient);
     }
 }
