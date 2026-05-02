@@ -1,6 +1,10 @@
 package net.wxyttransit.forge;
 
+import dev.architectury.platform.Platform;
 import dev.architectury.platform.forge.EventBuses;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.fml.DistExecutor;
+import net.minecraftforge.fml.loading.FMLEnvironment;
 import net.wxyttransit.WxytTransit;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -12,6 +16,6 @@ public class WxytTransitForge {
         // Submit our event bus to let architectury register our content on the right time
         EventBuses.registerModEventBus(WxytTransit.MOD_ID, FMLJavaModLoadingContext.get().getModEventBus());
         WxytTransit.init();
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(WxytTransitForgeClient::init);
+        if(FMLEnvironment.dist==Dist.CLIENT)FMLJavaModLoadingContext.get().getModEventBus().addListener(WxytTransitForgeClient::init);
     }
 }

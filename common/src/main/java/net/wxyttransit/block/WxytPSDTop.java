@@ -1,6 +1,7 @@
 package net.wxyttransit.block;
 
 import dev.architectury.networking.NetworkManager;
+import dev.architectury.utils.Env;
 import io.netty.buffer.Unpooled;
 import mtr.BlockEntityTypes;
 import mtr.Items;
@@ -20,6 +21,8 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -48,7 +51,8 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.wxyttransit.WxytBlockEntityTypes;
 import net.wxyttransit.WxytBlocks;
 import net.wxyttransit.WxytItems;
-import net.wxyttransit.gui.GUIPSDTopSettings;
+
+import net.wxyttransit.gui.ScreenUtil;
 import net.wxyttransit.packet.PacketHelper;
 import org.jetbrains.annotations.NotNull;
 
@@ -75,9 +79,10 @@ public class WxytPSDTop extends BlockPSDTop implements EntityBlockMapper, IBlock
     public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
         if (player.getMainHandItem().is(WxytItems.WXYT_BRUSH.get())) {
             BlockEntity entity = world.getBlockEntity(pos);
-            if (entity instanceof WxytPSDTop.TileEntityPSDTop top && world.isClientSide()) {
-                Minecraft.getInstance().setScreen(new GUIPSDTopSettings<>(Component.translatable("gui.wxyttransit.psdTopSettings"), top));
-                top.needToRefresh = true;
+            if (!world.isClientSide&&entity instanceof WxytPSDTop.TileEntityPSDTop top) {
+                System.out.println(145146255);
+ScreenUtil.setPSDTopScreen((ServerPlayer)player,top);
+top.needToRefresh = true;
 
             }
         } else if (player.getMainHandItem().is(Items.BRUSH.get())) {

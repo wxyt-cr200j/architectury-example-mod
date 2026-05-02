@@ -128,8 +128,8 @@ public class GUIPSDAPGGlassSettings<T extends WxytPSDAPGGlassBase.TileEntityPSDA
         isChoosing_type.add(String.valueOf(type));
         //list = new ButtonList(width/4 - 50,60,100,100,this);
 
-        button1.render(g, mx, my, f);
-        button3.render(g, mx, my, f);
+        if(button1!=null)     button1.render(g, mx, my, f);
+        if(button1!=null)    button3.render(g, mx, my, f);
       //  list.render(g, mx, my, f);
         //entity.renderType=renderScriptIsChoosing;
     }

@@ -5,17 +5,14 @@ import mtr.block.IBlock;
 import mtr.data.IGui;
 import mtr.mappings.BlockEntityMapper;
 import mtr.mappings.EntityBlockMapper;
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -24,8 +21,7 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.wxyttransit.WxytItems;
-import net.wxyttransit.gui.GUIPSDAPGDoorSettings;
-import net.wxyttransit.gui.GUIPSDAPGGlassSettings;
+import net.wxyttransit.gui.ScreenUtil;
 import org.jetbrains.annotations.NotNull;
 
 public abstract class WxytPSDAPGGlassBase extends BlockPSDAPGGlassBase implements EntityBlockMapper {
@@ -35,8 +31,9 @@ public abstract class WxytPSDAPGGlassBase extends BlockPSDAPGGlassBase implement
 		if(player.getMainHandItem().is( WxytItems.WXYT_BRUSH.get())){
 			BlockEntity entity = world.getBlockEntity(pos);
 
-			if(entity instanceof WxytPSDAPGGlassBase.TileEntityPSDAPGGlassBase base&&world.isClientSide) {
-				Minecraft.getInstance().setScreen(new GUIPSDAPGGlassSettings<>(Component.translatable("gui.wxyttransit.psdapgsettings"),base ));
+			if(!world.isClientSide&&entity instanceof WxytPSDAPGGlassBase.TileEntityPSDAPGGlassBase base) {
+				ScreenUtil.setPSDGlassScreen(player,base);
+				return InteractionResult.SUCCESS;
 			}
 		}
 		return IBlock.checkHoldingBrush(world, player, () -> {

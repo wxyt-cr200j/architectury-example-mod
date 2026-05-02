@@ -86,7 +86,7 @@ public class GUIPSDTopSettings<T extends WxytPSDTop.TileEntityPSDTop> extends Wx
                 }
             });
         }));
-        button1.render(g, mx, my, f);
+        if(button1!=null)   button1.render(g, mx, my, f);
       //  list.render(g, mx, my, f);
         //entity.renderType=renderScriptIsChoosing;
     }

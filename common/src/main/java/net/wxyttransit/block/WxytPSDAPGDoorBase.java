@@ -6,7 +6,6 @@ import mtr.block.IBlock;
 import mtr.data.IGui;
 import mtr.mappings.EntityBlockMapper;
 import mtr.mappings.Text;
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -33,7 +32,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.wxyttransit.WxytItems;
-import net.wxyttransit.gui.GUIPSDAPGDoorSettings;
+import net.wxyttransit.gui.ScreenUtil;
 import org.jetbrains.annotations.NotNull;
 
 public abstract class WxytPSDAPGDoorBase extends BlockPSDAPGDoorBase implements EntityBlockMapper {
@@ -89,9 +88,10 @@ public abstract class WxytPSDAPGDoorBase extends BlockPSDAPGDoorBase implements 
 	public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
 		if(player.getMainHandItem().is( WxytItems.WXYT_BRUSH.get())){
 			BlockEntity entity = world.getBlockEntity(pos);
-
-			if(entity instanceof WxytPSDAPGDoorBase.TileEntityPSDAPGDoorBase base&&world.isClientSide) {
-				Minecraft.getInstance().setScreen(new GUIPSDAPGDoorSettings<>(Component.translatable("gui.wxyttransit.psdapgsettings"),base ));
+System.out.println(world.isClientSide);
+			if(!world.isClientSide&&entity instanceof WxytPSDAPGDoorBase.TileEntityPSDAPGDoorBase base) {
+				ScreenUtil.setPSDDoorScreen(player,base);
+				return InteractionResult.SUCCESS;
 			}
 		}
 		return IBlock.checkHoldingBrush(world, player, () -> {

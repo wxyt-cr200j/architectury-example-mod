@@ -201,10 +201,10 @@ public class GUIPSDAPGDoorSettings<T extends WxytPSDAPGDoorBase.TileEntityPSDAPG
         isChoosing_light_type.add(String.valueOf(light_type));
         //list = new ButtonList(width/4 - 50,60,100,100,this);
 
-        button1.render(g, mx, my, f);
-        button2.render(g, mx, my, f);
-        button3.render(g, mx, my, f);
-        button4.render(g, mx, my, f);
+        if(button1!=null)button1.render(g, mx, my, f);
+        if(button2!=null)    button2.render(g, mx, my, f);
+        if(button3!=null)  button3.render(g, mx, my, f);
+        if(button4!=null)   button4.render(g, mx, my, f);
       //  list.render(g, mx, my, f);
         //entity.renderType=renderScriptIsChoosing;
     }

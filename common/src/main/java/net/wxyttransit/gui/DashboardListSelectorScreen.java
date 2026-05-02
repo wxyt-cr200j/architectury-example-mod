@@ -22,7 +22,7 @@ public class DashboardListSelectorScreen extends ScreenMapper implements IGui {
 	private final DashboardList selectedList;
 	private final Button buttonDone;
 
-	private final ScreenMapper previousScreen;
+	private final WxytScreen previousScreen;
 	private final Runnable onClose;
 	private final List<NameColorDataBase> allData;
 	private final Collection<String> selectedIds;
@@ -33,11 +33,11 @@ public class DashboardListSelectorScreen extends ScreenMapper implements IGui {
 		this(null, onClose, allData, selectedIds, isSingleSelect, canRepeat);
 	}
 
-	public DashboardListSelectorScreen(ScreenMapper previousScreen, List<NameColorDataBase> allData, Collection<String> selectedIds, boolean isSingleSelect, boolean canRepeat) {
+	public DashboardListSelectorScreen(WxytScreen previousScreen, List<NameColorDataBase> allData, Collection<String> selectedIds, boolean isSingleSelect, boolean canRepeat) {
 		this(previousScreen, null, allData, selectedIds, isSingleSelect, canRepeat);
 	}
 
-	private DashboardListSelectorScreen(ScreenMapper previousScreen, Runnable onClose, List<NameColorDataBase> allData, Collection<String> selectedIds, boolean isSingleSelect, boolean canRepeat) {
+	private DashboardListSelectorScreen(WxytScreen previousScreen, Runnable onClose, List<NameColorDataBase> allData, Collection<String> selectedIds, boolean isSingleSelect, boolean canRepeat) {
 		super(Text.literal(""));
 		this.previousScreen = previousScreen;
 		this.onClose = onClose;
@@ -107,7 +107,7 @@ public class DashboardListSelectorScreen extends ScreenMapper implements IGui {
 			onClose.run();
 		}
 		if (minecraft != null && previousScreen != null) {
-			UtilitiesClient.setScreen(minecraft, previousScreen);
+			minecraft.setScreen(previousScreen);
 		}
 	}
 

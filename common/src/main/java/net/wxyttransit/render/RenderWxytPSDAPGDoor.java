@@ -37,7 +37,7 @@ public class RenderWxytPSDAPGDoor<T extends BlockPSDAPGDoorBase.TileEntityPSDAPG
 	private int lightType;
 	private String district;
 	private String lightDistrict;
-
+    private boolean hasDoorLight=true;
 	public RenderWxytPSDAPGDoor(BlockEntityRenderDispatcher dispatcher, String district, int type, int lightType) {
 		super(dispatcher);
 		this.type = type;
@@ -46,9 +46,16 @@ public class RenderWxytPSDAPGDoor<T extends BlockPSDAPGDoorBase.TileEntityPSDAPG
 		this.lightDistrict = district;
 	}
 
+	public RenderWxytPSDAPGDoor(boolean hasDoorLight,BlockEntityRenderDispatcher dispatcher, String district, int type, int lightType) {
+		super(dispatcher);
+		this.type = type;
+		this.lightType = lightType;
+		this.district = district;
+		this.lightDistrict = district;
+		this.hasDoorLight=hasDoorLight;
+	}
 	@Override
 	public void render(T entity, float tickDelta, PoseStack matrices, MultiBufferSource vertexConsumers, int light, int overlay) {
-		//System.out.println("1145141919810");
 		final Level world = entity.getLevel();
 		if (world == null) {
 			return;
@@ -146,7 +153,9 @@ public class RenderWxytPSDAPGDoor<T extends BlockPSDAPGDoorBase.TileEntityPSDAPG
 			//Minecraft.getInstance().getBlockRenderer().getModelRenderer().renderModel(matricesNew.last(),vertexConsumer,state,model,1,1,1,light,overlay);
 
 		//	Minecraft.getInstance().getTextureManager().bindForSetup(new ResourceLocation(loc));
-			if(model1!=null)model1.render(matricesNew,light,vertexConsumer);
+			if(model1!=null){
+
+				model1.render(matricesNew,light,vertexConsumer);}
 
 
 			matricesNew.popPose();
@@ -158,6 +167,7 @@ public class RenderWxytPSDAPGDoor<T extends BlockPSDAPGDoorBase.TileEntityPSDAPG
 			//Minecraft.getInstance().getBlockRenderer().renderSingleBlock(state,mat,vertexConsumers,light,overlay);
 			//matricesNew.popPose();
 		});
+		if(hasDoorLight){
 		RenderTrains.scheduleRender(new ResourceLocation(String.format("wxyttransit:textures/block/psd_light_%s_bone_%s.png",lightDistrict,lightType)),false,RenderTrains.QueuedRenderLayer.EXTERIOR,(matricesNew, vertexConsumer) -> {
 
 			//storedMatrixTransformationsLight.transform(matricesNew);
@@ -213,7 +223,7 @@ public class RenderWxytPSDAPGDoor<T extends BlockPSDAPGDoorBase.TileEntityPSDAPG
 			//RenderBlockModel.renderBakedModel(matricesNew, vertexConsumer,world,state,pos,model);
 			//Minecraft.getInstance().getBlockRenderer().renderSingleBlock(state,mat,vertexConsumers,light,overlay);
 			//matricesNew.popPose();
-		});
+		});}
 	}
 
 	@Override

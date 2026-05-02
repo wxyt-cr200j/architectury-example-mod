@@ -2,6 +2,10 @@ package net.wxyttransit;
 
 import dev.architectury.injectables.annotations.ExpectPlatform;
 import dev.architectury.platform.Platform;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.wxyttransit.block.WxytPSDDoor;
+import net.wxyttransit.block.WxytPSDTop;
 
 import java.nio.file.Path;
 
@@ -23,5 +27,14 @@ public class WxytExpectPlatform {
     public static Path getConfigDirectory() {
         // Just throw an error, the content should get replaced at runtime.
         throw new AssertionError();
+    }
+
+    @ExpectPlatform
+    public static void setScreen(Screen screen){
+    }
+
+    @ExpectPlatform
+    public static void setPSDTopScreen(WxytPSDTop.TileEntityPSDTop top){
+
     }
 }

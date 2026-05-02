@@ -11,4 +11,5 @@ public class WxytBlocks {
 
     public static RegistryObject<Block> WXYT_PSD_TOP_0=new RegistryObject<>(WxytPSDTop::new);
 
+    public static RegistryObject<Block> WXYT_PSD_ONLY_DOOR_0=new RegistryObject<>(()->new WxytPSDDoorOnly(0));
 }
