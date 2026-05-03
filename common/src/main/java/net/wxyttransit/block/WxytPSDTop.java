@@ -80,7 +80,7 @@ public class WxytPSDTop extends BlockPSDTop implements EntityBlockMapper, IBlock
         if (player.getMainHandItem().is(WxytItems.WXYT_BRUSH.get())) {
             BlockEntity entity = world.getBlockEntity(pos);
             if (!world.isClientSide&&entity instanceof WxytPSDTop.TileEntityPSDTop top) {
-                System.out.println(145146255);
+                //System.out.println(145146255);
 ScreenUtil.setPSDTopScreen((ServerPlayer)player,top);
 top.needToRefresh = true;
 
@@ -272,12 +272,12 @@ top.needToRefresh = true;
         @Override
         public void readCompoundTag(CompoundTag tag) {
             renderType = Objects.requireNonNull(tag.get("renderType")).getAsString();
-            System.out.println(renderType + "111");
+            //System.out.println(renderType + "111");
         }
 
         @Override
         public void writeCompoundTag(CompoundTag tag) {
-            System.out.println(renderType + "000");
+            //System.out.println(renderType + "000");
             tag.putString("renderType", renderType);
         }
 
@@ -305,7 +305,7 @@ top.needToRefresh = true;
 
         @Override
         public @NotNull CompoundTag getUpdateTag() {
-            System.out.println(1451412);
+            //System.out.println(1451412);
             return getTag();
         }
 

@@ -25,10 +25,10 @@ public class WxytTextureData {
     }
     public void addRenderConsumer(String string,BiConsumer<DataObject,GraphicsTexture> consumer){
         map.put(string,consumer);
-       // System.out.println(map);
+       // //System.out.println(map);
     }
     public BiConsumer<DataObject,GraphicsTexture> getRenderConsumer(String string){
-        //System.out.println(string);
+        ////System.out.println(string);
         if(map.containsKey(string))return map.get(string);
         else return (DataObject,GraphicsTexture) ->{};
     }
@@ -37,17 +37,17 @@ public class WxytTextureData {
         if(textureHashMap.containsKey(new Pair<>(String.format("%s_%s_%s",string,w,h),obj.id))){
             gt=textureHashMap.get(new Pair<>(String.format("%s_%s_%s",string,w,h),obj.id));
             if(gt.isClosed()){
-                System.out.println(15623);
+                //System.out.println(15623);
                 gt=new GraphicsTexture(w,h);
                 textureHashMap.put(new Pair<>(String.format("%s_%s_%s",string,w,h),obj.id),gt);
                 resourcesNeedToRefresh.add(gt);
             }
-            // System.out.println(15);
+            // //System.out.println(15);
         }else{
             gt=new GraphicsTexture(w,h);
             textureHashMap.put(new Pair<>(String.format("%s_%s_%s",string,w,h),obj.id),gt);
             resourcesNeedToRefresh.add(gt);
-            // System.out.println(16);
+            // //System.out.println(16);
         }
         if(resourcesNeedToRefresh.contains(gt)||forceRefresh){
             getRenderConsumer(string).accept(obj,gt);
@@ -63,17 +63,17 @@ public class WxytTextureData {
         if(textureHashMap.containsKey(new Pair<>(String.format("%s_%s_%s",string,w,h),obj.id))){
             gt=textureHashMap.get(new Pair<>(String.format("%s_%s_%s",string,w,h),obj.id));
             if(gt.isClosed()){
-                System.out.println(15623);
+                //System.out.println(15623);
                 gt=new GraphicsTexture(w,h);
                 textureHashMap.put(new Pair<>(String.format("%s_%s_%s",string,w,h),obj.id),gt);
                 resourcesNeedToRefresh.add(gt);
             }
-           // System.out.println(15);
+           // //System.out.println(15);
         }else{
             gt=new GraphicsTexture(w,h);
             textureHashMap.put(new Pair<>(String.format("%s_%s_%s",string,w,h),obj.id),gt);
             resourcesNeedToRefresh.add(gt);
-           // System.out.println(16);
+           // //System.out.println(16);
         }
         if(resourcesNeedToRefresh.contains(gt)){
             getRenderConsumer(string).accept(obj,gt);
@@ -85,7 +85,7 @@ public class WxytTextureData {
         return getTexture(string, obj, w, h).identifier;
     }
     public void refreshAll(){
-        System.out.println("refresh");
+        //System.out.println("refresh");
         textureHashMap.forEach(((stringLongPair, graphicsTexture) -> {
             resourcesNeedToRefresh.add(graphicsTexture);
         }));

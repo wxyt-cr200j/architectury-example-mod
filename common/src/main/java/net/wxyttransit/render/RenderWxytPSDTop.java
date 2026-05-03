@@ -61,7 +61,7 @@ public class RenderWxytPSDTop<T extends WxytPSDTop.TileEntityPSDTop> extends Blo
 
     @Override
     public final void render(@NotNull T entity, float tickDelta, PoseStack matrices, MultiBufferSource vertexConsumers, int light, int overlay) {
-        //	System.out.println(6789);
+        //	//System.out.println(6789);
         final Level world = entity.getLevel();
         if (world == null) {
             return;
@@ -100,7 +100,7 @@ public class RenderWxytPSDTop<T extends WxytPSDTop.TileEntityPSDTop> extends Blo
                     final int arrowDirection = IBlock.getStatePropertySafe(state, arrowDirectionProperty);
 
                     final ResourceLocation resourceLocation;
-                    //System.out.println(platformId);
+                    ////System.out.println(platformId);
                     resourceLocation = WxytTextureData.data.getTextureLocation(type, new DataObject((Long) (platformId), arrowDirection), (int) (width * WxytTextureData.data.textureScale), (int) (height * WxytTextureData.data.textureScale),entity.needToRefresh);
                     entity.needToRefresh = false;
 

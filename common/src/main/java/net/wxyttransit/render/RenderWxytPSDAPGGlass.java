@@ -48,7 +48,7 @@ public class RenderWxytPSDAPGGlass<T extends WxytPSDAPGGlassBase.TileEntityPSDAP
 
 	@Override
 	public void render(T entity, float tickDelta, PoseStack matrices, MultiBufferSource vertexConsumers, int light, int overlay) {
-		//System.out.println("1145141919810");
+		////System.out.println("1145141919810");
 		final Level world = entity.getLevel();
 		if (world == null) {
 			return;
@@ -119,7 +119,7 @@ public class RenderWxytPSDAPGGlass<T extends WxytPSDAPGGlassBase.TileEntityPSDAP
 		final StoredMatrixTransformations storedMatrixTransformations1 = storedMatrixTransformations.copy();
 		final StoredMatrixTransformations storedMatrixTransformations2 = storedMatrixTransformations.copy();
 		SzmetroBbModel model1=SzmetroBbModel.get(new ResourceLocation(loc1));
-		//System.out.println(type);
+		////System.out.println(type);
 		//Minecraft.getInstance().getBlockRenderer().renderSingleBlock(state,mat,vertexConsumers,light,overlay);
 		RenderTrains.scheduleRender(new ResourceLocation(String.format("wxyttransit:textures/block/psd_glass_%s_%s_%s_%s.png",district,state.getValue(WxytPSDAPGGlassBase.HALF).toString().toLowerCase(),state.getValue(WxytPSDAPGGlassBase.SIDE_EXTENDED).toString().toLowerCase(),type)), false,RenderTrains.QueuedRenderLayer.EXTERIOR, (matricesNew, vertexConsumer) -> {
 

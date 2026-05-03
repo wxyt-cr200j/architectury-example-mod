@@ -28,11 +28,11 @@ public class JsonReader {
             InputStream is = res.get().open();
             InputStreamReader r = new InputStreamReader(is);
             JsonObject json = GsonHelper.parse(r);
-            //System.out.println(json);
+            ////System.out.println(json);
             return json.deepCopy();
         } catch (Exception e) {
 
-            System.out.println(1145141919);
+            //System.out.println(1145141919);
             return GSON.fromJson("{}", JsonObject.class);
         }
     }

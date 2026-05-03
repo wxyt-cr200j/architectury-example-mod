@@ -42,8 +42,8 @@ public class ModelGetter {
 
     public static BlockBenchModel getBlockBenchModel(ResourceLocation rl)
     {
-        //System.out.println(JsonReader.readJson(rl));
-        //System.out.println(1.14);
+        ////System.out.println(JsonReader.readJson(rl));
+        ////System.out.println(1.14);
         return new BlockBenchModel((JsonReader.readJson(rl).deepCopy()));
     }
 }

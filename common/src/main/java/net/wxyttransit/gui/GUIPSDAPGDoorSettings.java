@@ -117,11 +117,11 @@ public class GUIPSDAPGDoorSettings<T extends WxytPSDAPGDoorBase.TileEntityPSDAPG
                 });
             }
         });
-        System.out.println(list_district.get(0).id);
-        System.out.println(list_district.get(0).id==isChoosing_district.get(0));
-        System.out.println(Objects.equals(list_district.get(0).id, isChoosing_district.get(0)));
+        //System.out.println(list_district.get(0).id);
+        //System.out.println(list_district.get(0).id==isChoosing_district.get(0));
+        //System.out.println(Objects.equals(list_district.get(0).id, isChoosing_district.get(0)));
 
-        System.out.println(isChoosing_district);
+        //System.out.println(isChoosing_district);
         button1 = Button.builder(Component.translatable("gui.wxyttransit.chooseDistrict"),btn->{
 
             screenListDistrict=new DashboardListSelectorScreen(()->{

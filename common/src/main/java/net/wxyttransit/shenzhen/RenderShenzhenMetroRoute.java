@@ -17,7 +17,7 @@ public class RenderShenzhenMetroRoute {
     static Font SANS = TextDrawUtils.getFont(new ResourceLocation("wxyttransit:font/lanting.ttf"));
 
     public static void draw(DataObject obj, GraphicsTexture gt){
-      //  System.out.println(654);
+      //  //System.out.println(654);
         Graphics2D g = gt.graphics;
         int wid = gt.width;
         int hei = gt.height;
@@ -31,7 +31,7 @@ public class RenderShenzhenMetroRoute {
         g.setClip(0,0,wid,hei);
         int i = 0;
         obj.details.forEach(details->{
-           // System.out.println(details.stationDetails.get(0));
+           // //System.out.println(details.stationDetails.get(0));
             draw(g,obj,details,wid,partHei);
             g.translate(0,partHei);
         });

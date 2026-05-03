@@ -21,11 +21,11 @@ public class PacketHelperClient {
 
     public static void registerPackets() {
 
-        System.out.println(565895);
+        //System.out.println(565895);
         NetworkManager.registerReceiver(NetworkManager.Side.S2C, DOOR_SCREEN_PACKET, (buf, context) -> {
             context.queue(() -> {WxytPSDAPGDoorBase.TileEntityPSDAPGDoorBase base = (WxytPSDAPGDoorBase.TileEntityPSDAPGDoorBase) Minecraft.getInstance().level.getBlockEntity(buf.readBlockPos());
 
-                System.out.println(1451457777);
+                //System.out.println(1451457777);
 
                 Minecraft.getInstance().setScreen(new GUIPSDAPGDoorSettings<>(Component.literal("door"),base));
 

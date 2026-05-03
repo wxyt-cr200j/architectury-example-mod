@@ -12,7 +12,7 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 @Mod("wxyttransit")
 public class WxytTransitForge {
     public WxytTransitForge() {
-        System.out.println(10001);
+        //System.out.println(10001);
         // Submit our event bus to let architectury register our content on the right time
         EventBuses.registerModEventBus(WxytTransit.MOD_ID, FMLJavaModLoadingContext.get().getModEventBus());
         WxytTransit.init();

@@ -239,7 +239,7 @@ public class TextDrawUtils {
                                              int minSize, int maxSize, boolean vertical) {
         if (text == null || text.isBlank() || maxW < 0 || maxH < 0 || minSize < 0 || maxSize < 0)
         {
-            //System.out.println("invalid params");
+            ////System.out.println("invalid params");
             return 0;
         }
 

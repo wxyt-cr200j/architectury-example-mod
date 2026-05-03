@@ -13,7 +13,7 @@ import net.wxyttransit.packet.PacketHelperClient;
 public class ScreenUtil {
     public static void setPSDTopScreen(Player player, WxytPSDTop.TileEntityPSDTop top){
 
-        System.out.println(15735);
+        //System.out.println(15735);
         FriendlyByteBuf buf = new FriendlyByteBuf(Unpooled.buffer());
         buf.writeBlockPos(top.getBlockPos());
        /* if(player instanceof ServerPlayer player1)*/NetworkManager.sendToPlayer((ServerPlayer) player, PacketHelper.TOP_SCREEN_PACKET,buf);

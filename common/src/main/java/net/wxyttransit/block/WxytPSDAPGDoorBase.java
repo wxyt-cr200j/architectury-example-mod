@@ -88,7 +88,7 @@ public abstract class WxytPSDAPGDoorBase extends BlockPSDAPGDoorBase implements 
 	public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
 		if(player.getMainHandItem().is( WxytItems.WXYT_BRUSH.get())){
 			BlockEntity entity = world.getBlockEntity(pos);
-System.out.println(world.isClientSide);
+//System.out.println(world.isClientSide);
 			if(!world.isClientSide&&entity instanceof WxytPSDAPGDoorBase.TileEntityPSDAPGDoorBase base) {
 				ScreenUtil.setPSDDoorScreen(player,base);
 				return InteractionResult.SUCCESS;
@@ -189,7 +189,7 @@ System.out.println(world.isClientSide);
 				if (open == 1 && level != null) {
 					level.setBlockAndUpdate(worldPosition, level.getBlockState(worldPosition).setValue(TEMP, false));
 				}
-				//System.out.println(open);
+				////System.out.println(open);
 			}
 		}
 

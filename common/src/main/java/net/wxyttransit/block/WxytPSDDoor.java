@@ -22,7 +22,7 @@ public class WxytPSDDoor extends WxytPSDAPGDoorBase {
 	public WxytPSDDoor(int style) {
 		super();
 		this.style = style;
-		//System.out.println(new WxytPSDDoor(11) instanceof BlockPSDAPGDoorBase);
+		////System.out.println(new WxytPSDDoor(11) instanceof BlockPSDAPGDoorBase);
 	}
 
 	@Override

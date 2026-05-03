@@ -25,7 +25,7 @@ public class BlockBenchModel extends EntityModel<Entity> {
         this.parseBBModel(model);
     }
     public BlockBenchModel(JsonObject model){
-        //System.out.println(14524);
+        ////System.out.println(14524);
         this.parseBBModel(model);
     }
 

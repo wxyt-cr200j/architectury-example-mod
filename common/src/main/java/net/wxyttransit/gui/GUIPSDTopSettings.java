@@ -51,8 +51,8 @@ public class GUIPSDTopSettings<T extends WxytPSDTop.TileEntityPSDTop> extends Wx
             });
         }));
         button1 = Button.builder(Component.translatable("gui.wxyttransit.chooseRenderType"),btn->{
-            System.out.println(list.toString());
-            System.out.println(isChoosing.toString());
+            //System.out.println(list.toString());
+            //System.out.println(isChoosing.toString());
             screenList=new DashboardListSelectorScreen(()->{
                 if(!isChoosing.get(0).isEmpty()) {
                     FriendlyByteBuf buf = new FriendlyByteBuf(Unpooled.buffer());

@@ -138,7 +138,7 @@ public class RenderWxytPSDAPGDoor<T extends BlockPSDAPGDoorBase.TileEntityPSDAPG
 		SzmetroBbModel model1=SzmetroBbModel.get(new ResourceLocation(loc1));
 		SzmetroBbModel modelLight1 = SzmetroBbModel.get(new ResourceLocation(locLight));
 		SzmetroBbModel modelLight2 = SzmetroBbModel.get(new ResourceLocation(locLight1));
-		//System.out.println(type);
+		////System.out.println(type);
 		//Minecraft.getInstance().getBlockRenderer().renderSingleBlock(state,mat,vertexConsumers,light,overlay);
 		RenderTrains.scheduleRender(new ResourceLocation(String.format("wxyttransit:textures/block/psd_door_%s_%s_%s_%s.png",district,state.getValue(WxytPSDAPGDoorBase.HALF).toString().toLowerCase(),state.getValue(WxytPSDAPGDoorBase.SIDE).toString().toLowerCase(),type)), false,RenderTrains.QueuedRenderLayer.EXTERIOR, (matricesNew, vertexConsumer) -> {
 
